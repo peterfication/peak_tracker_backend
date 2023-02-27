@@ -7,8 +7,11 @@
 # General application configuration
 import Config
 
-config :peak_tracker,
-  ecto_repos: [PeakTracker.Repo]
+# See https://ash-hq.org/docs/guides/ash/latest/tutorials/get-started#temporary-config
+config :ash, :use_all_identities_in_manage_relationship?, false
+
+config :peak_tracker, ecto_repos: [PeakTracker.Repo]
+config :peak_tracker, :ash_apis, [PeakTracker.Mountains]
 
 # Configures the endpoint
 config :peak_tracker, PeakTrackerWeb.Endpoint,
