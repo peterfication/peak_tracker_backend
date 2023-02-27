@@ -1,0 +1,11 @@
+{
+  "name": "peak_tracker",
+  "repository": "git@github.com:peterfication/peak_tracker_backend.git",
+  "scripts": {
+    "format": "prettier --write .",
+    "format:ci": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "^2.8.4"
+  }
+}
