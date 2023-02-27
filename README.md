@@ -1,18 +1,21 @@
-# PeakTracker
+# PeakTracker Backend
 
-To start your Phoenix server:
+This is the backend for PeakTracker which is a project for me to learn Elixir.
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+It's built with [Phoenix](https://www.phoenixframework.org/) and [Ash](https://ash-hq.org).
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+## Useful commands:
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+- `mix deps.get`: Install the dependencies
+- `mix ash_postgres.create`: Create the database
+- `mix ash_postgres.migrate`: Migrate the database
+- Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+  - Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-## Learn more
+### Create a peak
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+```elixir
+PeakTracker.Mountains.Peak
+|> Ash.Changeset.for_create(:create, %{name: "Wendelstein"})
+|> PeakTracker.Mountains.create!()
+```
