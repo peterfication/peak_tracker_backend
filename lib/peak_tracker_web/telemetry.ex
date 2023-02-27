@@ -1,4 +1,8 @@
 defmodule PeakTrackerWeb.Telemetry do
+  @moduledoc """
+  Phoenix Telemetry
+  """
+
   use Supervisor
   import Telemetry.Metrics
 

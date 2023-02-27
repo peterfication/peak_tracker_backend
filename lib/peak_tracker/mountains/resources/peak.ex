@@ -1,4 +1,8 @@
 defmodule PeakTracker.Mountains.Peak do
+  @moduledoc """
+  A Peak represents a mountain peak.
+  """
+
   use Ash.Resource,
     data_layer: AshPostgres.DataLayer
 

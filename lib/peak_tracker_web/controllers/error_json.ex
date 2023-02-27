@@ -1,4 +1,8 @@
 defmodule PeakTrackerWeb.ErrorJSON do
+  @moduledoc """
+  Phoenix default ErrorJSON
+  """
+
   # If you want to customize a particular status code,
   # you may add your own clauses, such as:
   #
