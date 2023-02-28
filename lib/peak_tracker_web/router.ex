@@ -8,4 +8,13 @@ defmodule PeakTrackerWeb.Router do
   scope "/api", PeakTrackerWeb do
     pipe_through :api
   end
+
+  scope "/" do
+    forward "/gql", Absinthe.Plug, schema: PeakTracker.Schema
+
+    forward "/playground",
+            Absinthe.Plug.GraphiQL,
+            schema: PeakTracker.Schema,
+            interface: :playground
+  end
 end

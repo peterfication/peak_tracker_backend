@@ -1,0 +1,120 @@
+schema {
+  query: RootQueryType
+}
+
+input PeakSortInput {
+  order: SortOrder
+  field: PeakSortField!
+}
+
+"A relay page info"
+type PageInfo {
+  "When paginating backwards, are there more items?"
+  hasPreviousPage: Boolean!
+
+  "When paginating forwards, are there more items?"
+  hasNextPage: Boolean!
+
+  "When paginating backwards, the cursor to continue"
+  startCursor: String
+
+  "When paginating forwards, the cursor to continue"
+  endCursor: String
+}
+
+"A relay node"
+interface Node {
+  "A unique identifier"
+  id: ID!
+}
+
+type RootQueryType {
+  peaks(
+    "How to sort the records in the response"
+    sort: [PeakSortInput]
+
+    "A filter to limit the results"
+    filter: PeakFilterInput
+
+    "The number of records to return from the beginning. Maximum 250"
+    first: Int
+
+    "Show records before the specified keyset."
+    before: String
+
+    "Show records after the specified keyset."
+    after: String
+
+    "The number of records to return to the end. Maximum 250"
+    last: Int
+  ): PeakConnection
+  peak(
+    "The id of the record"
+    id: ID!
+  ): Peak
+}
+
+type Peak implements Node {
+  id: ID!
+  name: String!
+}
+
+":peak edge"
+type PeakEdge {
+  "Cursor"
+  cursor: String!
+
+  ":peak node"
+  node: Peak
+}
+
+":peak connection"
+type PeakConnection {
+  "Total count on all pages"
+  count: Int
+
+  "Page information"
+  pageInfo: PageInfo!
+
+  ":peak edges"
+  edges: [PeakEdge]
+}
+
+input PeakFilterId {
+  isNil: Boolean
+  eq: ID
+  notEq: ID
+  in: [ID!]
+  lessThan: ID
+  greaterThan: ID
+  lessThanOrEqual: ID
+  greaterThanOrEqual: ID
+}
+
+enum SortOrder {
+  DESC
+  ASC
+}
+
+input PeakFilterName {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String!]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+}
+
+input PeakFilterInput {
+  and: [PeakFilterInput!]
+  or: [PeakFilterInput!]
+  id: PeakFilterId
+  name: PeakFilterName
+}
+
+enum PeakSortField {
+  ID
+  NAME
+}

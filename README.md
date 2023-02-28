@@ -16,6 +16,6 @@ It's built with [Phoenix](https://www.phoenixframework.org/) and [Ash](https://a
 
 ```elixir
 PeakTracker.Mountains.Peak
-|> Ash.Changeset.for_create(:create, %{name: "Wendelstein"})
+|> Ash.Changeset.for_create(:create, %{name: "Zugspitze"})
 |> PeakTracker.Mountains.create!()
 ```

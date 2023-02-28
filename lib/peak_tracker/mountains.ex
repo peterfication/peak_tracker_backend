@@ -3,7 +3,15 @@ defmodule PeakTracker.Mountains do
   PeakTracker.Mountains is responsible for managing data about mountains.
   """
 
-  use Ash.Api
+  use Ash.Api,
+    extensions: [
+      AshGraphql.Api
+    ]
+
+  graphql do
+    # TODO: Remove this once authorization is implemented
+    authorize?(false)
+  end
 
   resources do
     registry(PeakTracker.Mountains.Registry)
