@@ -33,5 +33,7 @@ defmodule PeakTracker.Mountains.Peak do
     attribute :name, :string do
       allow_nil?(false)
     end
+
+    timestamps()
   end
 end

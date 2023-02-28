@@ -1,4 +1,7 @@
 defmodule PeakTracker.Schema do
+  @moduledoc """
+  The PeakTracker GraphQL schema definition.
+  """
   use Absinthe.Schema
 
   @apis [PeakTracker.Mountains]
@@ -15,7 +18,7 @@ defmodule PeakTracker.Schema do
     AshGraphql.add_context(ctx, @apis)
   end
 
-  def plugins() do
+  def plugins do
     [Absinthe.Middleware.Dataloader | Absinthe.Plugin.defaults()]
   end
 end
