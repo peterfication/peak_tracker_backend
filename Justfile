@@ -9,9 +9,20 @@ ci: format graphql-schema-dump lint test
 db-create:
   mix ash_postgres.create
 
-# Migrate the database
+# Drop the dev database
+db-drop:
+  mix ash_postgres.drop
+
+# Migrate the dev database
 db-migrate:
   mix ash_postgres.migrate
+
+# Seed the dev database
+db-seed:
+  mix run priv/repo/seeds.exs
+
+# Drop and recreate and seed the database
+db-reset: db-drop db-create db-migrate db-seed
 
 # Format all files
 format:
