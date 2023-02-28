@@ -18,13 +18,23 @@ defmodule PeakTracker.Mountains.Peak do
     type(:peak)
 
     queries do
-      list(:peaks, :read)
+      list(:peaks, :read_paginated, relay?: true)
       get(:peak, :read)
     end
   end
 
   actions do
     defaults([:create, :read, :update, :destroy])
+
+    read :read_paginated do
+      pagination(
+        required?: true,
+        offset?: true,
+        countable: true,
+        keyset?: true,
+        default_limit: 20
+      )
+    end
   end
 
   attributes do

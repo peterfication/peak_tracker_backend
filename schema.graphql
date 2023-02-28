@@ -7,6 +7,27 @@ input PeakSortInput {
   field: PeakSortField!
 }
 
+"A relay page info"
+type PageInfo {
+  "When paginating backwards, are there more items?"
+  hasPreviousPage: Boolean!
+
+  "When paginating forwards, are there more items?"
+  hasNextPage: Boolean!
+
+  "When paginating backwards, the cursor to continue"
+  startCursor: String
+
+  "When paginating forwards, the cursor to continue"
+  endCursor: String
+}
+
+"A relay node"
+interface Node {
+  "A unique identifier"
+  id: ID!
+}
+
 type RootQueryType {
   peaks(
     "How to sort the records in the response"
@@ -14,16 +35,49 @@ type RootQueryType {
 
     "A filter to limit the results"
     filter: PeakFilterInput
-  ): [Peak!]!
+
+    "The number of records to return from the beginning. Maximum 250"
+    first: Int
+
+    "Show records before the specified keyset."
+    before: String
+
+    "Show records after the specified keyset."
+    after: String
+
+    "The number of records to return to the end. Maximum 250"
+    last: Int
+  ): PeakConnection
   peak(
     "The id of the record"
     id: ID!
   ): Peak
 }
 
-type Peak {
+type Peak implements Node {
   id: ID!
   name: String!
+}
+
+":peak edge"
+type PeakEdge {
+  "Cursor"
+  cursor: String!
+
+  ":peak node"
+  node: Peak
+}
+
+":peak connection"
+type PeakConnection {
+  "Total count on all pages"
+  count: Int
+
+  "Page information"
+  pageInfo: PageInfo!
+
+  ":peak edges"
+  edges: [PeakEdge]
 }
 
 input PeakFilterId {
