@@ -32,17 +32,19 @@ defmodule PeakTracker.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:absinthe_plug, "~> 1.5"},
+      {:ash, "~> 2.6.14"},
+      {:ash_graphql, "~> 0.22.4"},
+      {:ash_postgres, "~> 1.3.6"},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:ecto_sql, "~> 3.6"},
+      {:jason, "~> 1.2"},
       {:phoenix, "~> 1.7.0"},
       {:phoenix_ecto, "~> 4.4"},
-      {:ecto_sql, "~> 3.6"},
+      {:plug_cowboy, "~> 2.5"},
       {:postgrex, ">= 0.0.0"},
       {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 1.0"},
-      {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"},
-      {:ash, "~> 2.6.14"},
-      {:ash_postgres, "~> 1.3.6"},
-      {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
+      {:telemetry_poller, "~> 1.0"}
     ]
   end
 

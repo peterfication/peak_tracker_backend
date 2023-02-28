@@ -54,6 +54,26 @@ jobs:
       - run: mix deps.get
       - run: mix credo
 
+  graphql-schema-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: erlef/setup-beam@v1
+        with:
+          version-file: .tool-versions
+          version-type: "strict"
+      - name: Cache Elixir dependencies
+        uses: actions/cache@v3
+        with:
+          path: ./deps
+          key: deps-${{ hashFiles('mix.lock') }}
+      - run: mix deps.get
+      - run: mix absinthe.schema.sdl --schema PeakTracker.Schema
+      - name: Check that no changes exist
+        run: |
+          git status
+          git diff-index --quiet HEAD --
+
   test:
     runs-on: ubuntu-latest
     services:

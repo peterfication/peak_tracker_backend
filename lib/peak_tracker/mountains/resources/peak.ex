@@ -4,11 +4,23 @@ defmodule PeakTracker.Mountains.Peak do
   """
 
   use Ash.Resource,
-    data_layer: AshPostgres.DataLayer
+    data_layer: AshPostgres.DataLayer,
+    extensions: [
+      AshGraphql.Resource
+    ]
 
   postgres do
     table("peaks")
     repo(PeakTracker.Repo)
+  end
+
+  graphql do
+    type(:peak)
+
+    queries do
+      list(:peaks, :read)
+      get(:peak, :read)
+    end
   end
 
   actions do

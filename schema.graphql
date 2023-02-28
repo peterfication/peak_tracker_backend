@@ -1,0 +1,66 @@
+schema {
+  query: RootQueryType
+}
+
+input PeakSortInput {
+  order: SortOrder
+  field: PeakSortField!
+}
+
+type RootQueryType {
+  peaks(
+    "How to sort the records in the response"
+    sort: [PeakSortInput]
+
+    "A filter to limit the results"
+    filter: PeakFilterInput
+  ): [Peak!]!
+  peak(
+    "The id of the record"
+    id: ID!
+  ): Peak
+}
+
+type Peak {
+  id: ID!
+  name: String!
+}
+
+input PeakFilterId {
+  isNil: Boolean
+  eq: ID
+  notEq: ID
+  in: [ID!]
+  lessThan: ID
+  greaterThan: ID
+  lessThanOrEqual: ID
+  greaterThanOrEqual: ID
+}
+
+enum SortOrder {
+  DESC
+  ASC
+}
+
+input PeakFilterName {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String!]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+}
+
+input PeakFilterInput {
+  and: [PeakFilterInput!]
+  or: [PeakFilterInput!]
+  id: PeakFilterId
+  name: PeakFilterName
+}
+
+enum PeakSortField {
+  ID
+  NAME
+}
