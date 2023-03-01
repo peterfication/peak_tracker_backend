@@ -33,6 +33,14 @@ lint:
 setup:
   mix setup
 
+# Open an SSH session on fly.io
+ssh:
+  flyctl ssh console
+
+# Open an SSH session with IEX on fly.io
+ssh-iex:
+  flyctl ssh console --command "/app/bin/peak_tracker remote"
+
 # Start the Phoenix server
 start:
   mix phx.server
