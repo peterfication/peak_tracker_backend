@@ -25,9 +25,9 @@ format:
 graphql-schema-dump:
   mix absinthe.schema.sdl --schema PeakTracker.Schema
 
-# Lint Elixir files with credo
+# Lint Elixir files with credo and Javascript files with ESLint
 lint:
-  mix credo --strict
+  yarn lint && mix credo --strict
 
 # Setup the dependencies, the database and the assets
 setup:
