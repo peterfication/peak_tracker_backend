@@ -3,9 +3,14 @@
   "repository": "git@github.com:peterfication/peak_tracker_backend.git",
   "scripts": {
     "format": "prettier --write .",
-    "format:ci": "prettier --check ."
+    "format:ci": "prettier --check .",
+    "lint": "eslint assets/**/*.js .eslintrc.js --quiet",
+    "lint:fix": "eslint assets/**/*.js .eslintrc.js --fix --quiet"
   },
   "devDependencies": {
+    "eslint": "^7.32.0 || ^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.2",
     "prettier": "^2.8.4"
   }
 }
