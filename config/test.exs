@@ -20,6 +20,12 @@ config :peak_tracker, PeakTrackerWeb.Endpoint,
   secret_key_base: "FdI/c4TBlCWYrWH/AQ/9ElzE/XOW0BL874oiIB+lzHPxjY8HWOsAhe+6GBjVEyK7",
   server: false
 
+# In test we don't send emails.
+config :peak_tracker, PeakTracker.Mailer, adapter: Swoosh.Adapters.Test
+
+# Disable swoosh api client as it is only required for production adapters.
+config :swoosh, :api_client, false
+
 # Print only warnings and errors during test
 config :logger, level: :warning
 

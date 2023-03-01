@@ -5,24 +5,17 @@ default:
 # Run the things that are run in CI
 ci: format graphql-schema-dump lint test
 
-# Create the database
-db-create:
-  mix ash_postgres.create
-
-# Drop the dev database
-db-drop:
-  mix ash_postgres.drop
-
 # Migrate the dev database
 db-migrate:
   mix ash_postgres.migrate
 
+# Drop and recreate and seed the database
+db-reset:
+  mix ecto.reset
+
 # Seed the dev database
 db-seed:
-  mix run priv/repo/seeds.exs
-
-# Drop and recreate and seed the database
-db-reset: db-drop db-create db-migrate db-seed
+  mix ecto.seed
 
 # Format all files
 format:
@@ -36,7 +29,7 @@ graphql-schema-dump:
 lint:
   mix credo --strict
 
-# Setup the dependencies and the database
+# Setup the dependencies, the database and the assets
 setup:
   mix setup
 
@@ -45,8 +38,10 @@ start:
   mix phx.server
 
 # Start the Phoenix server with a REPL
-starti:
+start-interactive:
   iex -S mix phx.server
+
+alias starti := start-interactive
 
 # Run the tests
 test:
