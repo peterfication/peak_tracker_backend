@@ -37,10 +37,23 @@ defmodule PeakTracker.Mountains.Peak do
     end
   end
 
+  identities do
+    identity(:slug_unique, [:slug])
+  end
+
   attributes do
     uuid_primary_key(:id)
 
     attribute :name, :string do
+      allow_nil?(false)
+      constraints [
+        min_length: 2,
+        trim?: true,
+        allow_empty?: false
+      ]
+    end
+
+    attribute :slug, :string do
       allow_nil?(false)
     end
 
