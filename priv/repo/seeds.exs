@@ -1,16 +1,21 @@
 # Script for populating the database.
 
-# Get a peak
-{status, peak} = PeakTracker.Mountains.get(PeakTracker.Mountains.Peak, slug: "zugspitze")
+Enum.each(
+  [
+    %{name: "Zugspitze", slug: "zugspitze"},
+    %{name: "Mont Blanc", slug: "mont-blanc"}
+  ],
+  fn %{name: name, slug: slug} ->
+    {status, peak} = PeakTracker.Mountains.get(PeakTracker.Mountains.Peak, slug: slug)
 
-if status == :ok do
-  # Update the peak
-  peak
-  |> Ash.Changeset.for_update(:update, %{name: "Zugspitze"})
-  |> PeakTracker.Mountains.update!()
-else
-  # Create the peak if it doesn't exist
-  PeakTracker.Mountains.Peak
-  |> Ash.Changeset.for_create(:create, %{name: "Zugspitze", slug: "zugspitze"})
-  |> PeakTracker.Mountains.create!()
-end
+    if status == :ok do
+      peak
+      |> Ash.Changeset.for_update(:update, %{name: name})
+      |> PeakTracker.Mountains.update!()
+    else
+      PeakTracker.Mountains.Peak
+      |> Ash.Changeset.for_create(:create, %{name: name, slug: slug})
+      |> PeakTracker.Mountains.create!()
+    end
+  end
+)
