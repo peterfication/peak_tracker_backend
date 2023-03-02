@@ -54,9 +54,21 @@ type RootQueryType {
   ): Peak
 }
 
+input PeakFilterSlug {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String!]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+}
+
 type Peak implements Node {
   id: ID!
   name: String!
+  slug: String!
 }
 
 ":peak edge"
@@ -112,9 +124,11 @@ input PeakFilterInput {
   or: [PeakFilterInput!]
   id: PeakFilterId
   name: PeakFilterName
+  slug: PeakFilterSlug
 }
 
 enum PeakSortField {
   ID
   NAME
+  SLUG
 }
