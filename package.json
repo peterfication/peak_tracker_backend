@@ -1,6 +1,8 @@
 {
   "name": "peak_tracker",
   "repository": "git@github.com:peterfication/peak_tracker_backend.git",
+  "license": "UNLICENSED",
+  "private": true,
   "scripts": {
     "format": "prettier --write .",
     "format:ci": "prettier --check .",
