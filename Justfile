@@ -49,6 +49,10 @@ ssh:
 ssh-iex:
   flyctl ssh console --command "/app/bin/peak_tracker remote"
 
+# Proxy the production database
+ssh-proxy-db:
+  fly proxy 5433:5432 -a peak-tracker-db
+
 # Start the Phoenix server
 start:
   mix phx.server
