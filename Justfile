@@ -3,7 +3,7 @@ default:
   just --list
 
 # Run the things that are run in CI
-ci: format graphql-schema-dump lint test
+ci: spellcheck format graphql-schema-dump lint test
 
 # Migrate the dev database
 db-migrate:
@@ -41,6 +41,14 @@ release-prod:
 setup:
   mix setup
 
+# Run the spellchecker
+spellcheck:
+  yarn spellcheck
+
+# List all unknown words to add them to .cspell.dictionary.txt
+spellcheck-list:
+  yarn spellcheck:list
+
 # Open an SSH session on fly.io
 ssh:
   flyctl ssh console
@@ -48,6 +56,10 @@ ssh:
 # Open an SSH session with IEX on fly.io
 ssh-iex:
   flyctl ssh console --command "/app/bin/peak_tracker remote"
+
+# Proxy the production database
+ssh-proxy-db:
+  fly proxy 5433:5432 -a peak-tracker-db
 
 # Start the Phoenix server
 start:
