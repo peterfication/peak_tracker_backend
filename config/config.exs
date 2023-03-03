@@ -21,7 +21,7 @@ config :peak_tracker, PeakTrackerWeb.Endpoint,
     layout: false
   ],
   pubsub_server: PeakTracker.PubSub,
-  live_view: [signing_salt: "zwUZhP5h"]
+  live_view: [signing_salt: System.get_env("LIVE_VIEW_SIGNING_SALT") || "zwUZhP5h"]
 
 # Configures the mailer
 #

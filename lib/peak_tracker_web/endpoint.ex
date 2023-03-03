@@ -7,7 +7,7 @@ defmodule PeakTrackerWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_peak_tracker_key",
-    signing_salt: "9fCXQ4Rx",
+    signing_salt: System.get_env("SESSION_SIGNING_SALT") || "9fCXQ4Rx",
     same_site: "Lax"
   ]
 
