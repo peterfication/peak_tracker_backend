@@ -29,6 +29,14 @@ graphql-schema-dump:
 lint:
   yarn lint && mix credo --strict
 
+# Build the application in dev mode
+release-dev:
+  mix release
+
+# Build the application in prod mode
+release-prod:
+  MIX_ENV=prod mix release
+
 # Setup the dependencies, the database and the assets
 setup:
   mix setup
