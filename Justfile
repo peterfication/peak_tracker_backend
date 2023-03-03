@@ -3,7 +3,7 @@ default:
   just --list
 
 # Run the things that are run in CI
-ci: format graphql-schema-dump lint test
+ci: spellcheck format graphql-schema-dump lint test
 
 # Migrate the dev database
 db-migrate:
@@ -40,6 +40,14 @@ release-prod:
 # Setup the dependencies, the database and the assets
 setup:
   mix setup
+
+# Run the spellchecker
+spellcheck:
+  yarn spellcheck
+
+# List all unknown words to add them to .cspell.dictionary.txt
+spellcheck-list:
+  yarn spellcheck:list
 
 # Open an SSH session on fly.io
 ssh:
