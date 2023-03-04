@@ -110,4 +110,18 @@ defmodule PeakTrackerWeb do
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])
   end
+
+  defimpl Plug.Exception, for: Ash.Error.Invalid do
+    def status(exception) do
+      case exception do
+        %Ash.Error.Invalid{errors: [%Ash.Error.Query.NotFound{}]} ->
+          :not_found
+
+        _ ->
+          :bad_request
+      end
+    end
+
+    def actions(_exception), do: []
+  end
 end

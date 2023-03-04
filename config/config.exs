@@ -16,7 +16,7 @@ config :peak_tracker, PeakTrackerWeb.Endpoint,
   render_errors: [
     formats: [
       json: PeakTrackerWeb.ErrorJSON,
-      html: PeakTrackerWeb.ErrorView
+      html: PeakTrackerWeb.ErrorHTML
     ],
     layout: false
   ],
