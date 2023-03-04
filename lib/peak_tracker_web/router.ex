@@ -18,6 +18,9 @@ defmodule PeakTrackerWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :root
+
+    get "/peaks", PeakController, :index
+    get "/peaks/:slug", PeakController, :show
   end
 
   scope "/api", PeakTrackerWeb do
