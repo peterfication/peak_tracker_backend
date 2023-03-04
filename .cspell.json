@@ -11,6 +11,7 @@
   "ignorePaths": [
     "_build",
     "deps",
+    "erl_crash.dump",
     "node_modules",
     "priv/resource_snapshots",
     "priv/static/assets"
