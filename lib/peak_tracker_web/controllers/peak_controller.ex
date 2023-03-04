@@ -4,7 +4,9 @@ defmodule PeakTrackerWeb.PeakController do
   alias PeakTracker.Mountains
 
   def index(conn, _params) do
-    peaks = Mountains.list_peaks()
+    peaks = Mountains.Peak
+    |> Ash.Query.sort([:name])
+    |> Mountains.read!()
     render(conn, :index, peaks: peaks)
   end
 

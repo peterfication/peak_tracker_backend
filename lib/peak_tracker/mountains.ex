@@ -20,21 +20,6 @@ defmodule PeakTracker.Mountains do
   alias PeakTracker.Mountains.Peak
 
   @doc """
-  Returns the list of peaks.
-
-  ## Examples
-
-      iex> list_peaks()
-      [%Peak{}, ...]
-
-  """
-  def list_peaks do
-    Peak
-    |> Ash.Query.sort([:name])
-    |> read!()
-  end
-
-  @doc """
   Gets a single peak by its slug.
 
   Raises `Ecto.NoResultsError` if the Peak does not exist.
