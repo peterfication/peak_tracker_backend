@@ -16,35 +16,4 @@ defmodule PeakTracker.Mountains do
   resources do
     registry(PeakTracker.Mountains.Registry)
   end
-
-  alias PeakTracker.Mountains.Peak
-
-  @doc """
-  Gets a single peak by its slug.
-
-  Raises `Ecto.NoResultsError` if the Peak does not exist.
-
-  ## Examples
-
-      iex> get_peak!("some-slug")
-      %Peak{}
-
-      iex> get_peak!("some-other-slug")
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_peak!(slug), do: PeakTracker.Repo.get_by!(Peak, slug: slug)
-
-  @doc """
-  Gets a single peak by its slug or nil.
-
-  ## Examples
-
-      iex> get_peak("some-slug")
-      %Peak{}
-
-      iex> get_peak("some-other-slug")
-      nil
-  """
-  def get_peak(slug), do: PeakTracker.Repo.get_by(Peak, slug: slug)
 end
