@@ -9,7 +9,7 @@ processes = []
   release_command = "sh /release.sh"
 
 [env]
-  PHX_HOST = "peak-tracker.fly.dev"
+  PHX_HOST = "peak-tracker.com"
   PORT = "8080"
 
 [experimental]
