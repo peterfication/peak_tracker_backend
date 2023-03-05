@@ -1,4 +1,11 @@
 defmodule PeakTracker.Accounts.UserToken do
+  @moduledoc """
+  This module handles tokens for users.
+
+  Tokens are used for password resets, email confirmations, email validations
+  and session tokens.
+  """
+
   use Ecto.Schema
   import Ecto.Query
   alias PeakTracker.Accounts.UserToken

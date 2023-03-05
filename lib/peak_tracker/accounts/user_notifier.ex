@@ -1,4 +1,8 @@
 defmodule PeakTracker.Accounts.UserNotifier do
+  @moduledoc """
+  This module handles everything related to sending emails to users.
+  """
+
   import Swoosh.Email
 
   alias PeakTracker.Mailer

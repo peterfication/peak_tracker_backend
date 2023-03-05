@@ -1,4 +1,8 @@
 defmodule PeakTrackerWeb.UserAuth do
+  @moduledoc """
+  This module handles the authentication and authorization of users.
+  """
+
   use PeakTrackerWeb, :verified_routes
 
   import Plug.Conn

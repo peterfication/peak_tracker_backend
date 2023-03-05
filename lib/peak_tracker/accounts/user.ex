@@ -1,4 +1,8 @@
 defmodule PeakTracker.Accounts.User do
+  @moduledoc """
+  This module handles everything related to a user.
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 

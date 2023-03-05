@@ -1,6 +1,7 @@
 AFLAGS
 Graphi
 autoshow
+citext
 datastructure
 datetime
 describedby
@@ -13,6 +14,7 @@ gettext
 heroicons
 hexpm
 inet
+invalidtoken
 justfile
 keydown
 labelledby
@@ -22,6 +24,7 @@ maxlength
 minlength
 msgid
 msgstr
+noreply
 novalidate
 nowrap
 outdir
@@ -38,4 +41,5 @@ tbody
 thead
 topbar
 unistd
+validtoken
 zugspitze

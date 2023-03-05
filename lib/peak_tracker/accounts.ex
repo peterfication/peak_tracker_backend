@@ -6,7 +6,11 @@ defmodule PeakTracker.Accounts do
   import Ecto.Query, warn: false
   alias PeakTracker.Repo
 
-  alias PeakTracker.Accounts.{User, UserToken, UserNotifier}
+  alias PeakTracker.Accounts.{
+    User,
+    UserNotifier,
+    UserToken
+  }
 
   ## Database getters
 
