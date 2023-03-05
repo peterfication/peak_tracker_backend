@@ -8,7 +8,7 @@ defmodule PeakTrackerWeb.UserConfirmationInstructionsLiveTest do
   alias PeakTracker.Repo
 
   setup do
-    %{user: user_fixture()}
+    %{user: user_fixture(%{}, confirmed: false)}
   end
 
   describe "Resend confirmation" do
