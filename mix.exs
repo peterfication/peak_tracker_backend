@@ -32,6 +32,7 @@ defmodule PeakTracker.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:bcrypt_elixir, "~> 3.0"},
       {:absinthe_plug, "~> 1.5"},
       {:ash, "~> 2.6.14"},
       {:ash_graphql, "~> 0.22.4"},

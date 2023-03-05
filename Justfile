@@ -61,6 +61,10 @@ ssh-iex:
 ssh-proxy-db:
   fly proxy 5433:5432 -a peak-tracker-db
 
+# Restart the application on fly.io
+ssh-restart:
+  fly apps restart peak-tracker
+
 # Start the Phoenix server
 start:
   mix phx.server
