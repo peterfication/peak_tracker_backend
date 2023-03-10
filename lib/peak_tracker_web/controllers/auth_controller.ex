@@ -2,6 +2,8 @@ defmodule PeakTrackerWeb.AuthController do
   use PeakTrackerWeb, :controller
   use AshAuthentication.Phoenix.Controller
 
+  require Logger
+
   def success(conn, _activity, user, _token) do
     return_to = get_session(conn, :return_to) || ~p"/"
 
@@ -13,7 +15,8 @@ defmodule PeakTrackerWeb.AuthController do
   end
 
   def failure(conn, _activity, reason) do
-    IO.inspect(reason)
+    Logger.info("Auth failure: #{inspect(reason)}")
+
     conn
     |> put_status(401)
     |> render("failure.html")
