@@ -1,5 +1,4 @@
-AFLAGS
-Graphi
+aflags
 autoshow
 citext
 datastructure
@@ -8,9 +7,11 @@ describedby
 ecto
 enctype
 esbuild
+fkey
 floki
 flyctl
 gettext
+graphi
 heroicons
 hexpm
 inet
@@ -27,6 +28,7 @@ msgstr
 noreply
 novalidate
 nowrap
+ossp
 outdir
 peterfication
 proto
@@ -41,5 +43,6 @@ tbody
 thead
 topbar
 unistd
+upsert
 validtoken
 zugspitze

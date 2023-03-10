@@ -14,7 +14,7 @@ defmodule PeakTracker.MixProject do
   end
 
   # Configuration for the OTP application.
-  #
+
   # Type `mix help compile.app` for more information.
   def application do
     [
@@ -27,16 +27,17 @@ defmodule PeakTracker.MixProject do
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
 
-  # Specifies your project dependencies.
-  #
-  # Type `mix help deps` for examples and options.
+  # Project dependencies.
+  # Install them with "mix deps.get"
   defp deps do
     [
-      {:bcrypt_elixir, "~> 3.0"},
       {:absinthe_plug, "~> 1.5"},
       {:ash, "~> 2.6.14"},
+      {:ash_authentication, "~> 3.10.2"},
+      {:ash_authentication_phoenix, "~> 1.6.2", override: true},
       {:ash_graphql, "~> 0.22.4"},
       {:ash_postgres, "~> 1.3.6"},
+      {:bcrypt_elixir, "~> 3.0"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:ecto_sql, "~> 3.6"},
       {:esbuild, "~> 0.5", runtime: Mix.env() == :dev},
@@ -60,12 +61,7 @@ defmodule PeakTracker.MixProject do
     ]
   end
 
-  # Aliases are shortcuts or tasks specific to the current project.
-  # For example, to install project dependencies and perform other setup tasks, run:
-  #
-  #     $ mix setup
-  #
-  # See the documentation for `Mix` for more info on aliases.
+  # Mix aliases eg "mix setup"
   defp aliases do
     [
       setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],

@@ -15,9 +15,10 @@ defmodule PeakTracker.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: PeakTracker.PubSub},
       # Start the Endpoint (http/https)
-      PeakTrackerWeb.Endpoint
+      PeakTrackerWeb.Endpoint,
       # Start a worker by calling: PeakTracker.Worker.start_link(arg)
       # {PeakTracker.Worker, arg}
+      {AshAuthentication.Supervisor, otp_app: :peak_tracker}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
