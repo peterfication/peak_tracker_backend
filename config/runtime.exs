@@ -64,13 +64,33 @@ if config_env() == :prod do
     secret_key_base: secret_key_base
 
   # OAuth2 configuration
-  config :peak_tracker, :oauth_client_id, System.get_env("OAUTH2_CLIENT_ID") || raise "OAUTH2_CLIENT_ID is missing"
-  config :peak_tracker, :oauth_client_secret, System.get_env("OAUTH2_CLIENT_SECRET") || raise "OAUTH2_CLIENT_SECRET is missing"
-  config :peak_tracker, :oauth_site, System.get_env("OAUTH2_SITE") || raise "OAUTH2_SITE is missing"
-  config :peak_tracker, :oauth_authorize_url, System.get_env("OAUTH2_AUTHORIZE_URL") || raise "OAUTH2_AUTHORIZE_URL is missing"
-  config :peak_tracker, :oauth_token_url, System.get_env("OAUTH2_TOKEN_URL") || raise "OAUTH2_TOKEN_URL is missing"
-  config :peak_tracker, :oauth_user_url, System.get_env("OAUTH2_USER_URL") || raise "OAUTH2_USER_URL is missing"
-  config :peak_tracker, :oauth_redirect_uri, System.get_env("OAUTH2_REDIRECT_URI") || raise "OAUTH2_REDIRECT_URI is missing"
+  config :peak_tracker,
+         :oauth_client_id,
+         System.get_env("OAUTH2_CLIENT_ID") || raise("OAUTH2_CLIENT_ID is missing")
+
+  config :peak_tracker,
+         :oauth_client_secret,
+         System.get_env("OAUTH2_CLIENT_SECRET") || raise("OAUTH2_CLIENT_SECRET is missing")
+
+  config :peak_tracker,
+         :oauth_site,
+         System.get_env("OAUTH2_SITE") || raise("OAUTH2_SITE is missing")
+
+  config :peak_tracker,
+         :oauth_authorize_url,
+         System.get_env("OAUTH2_AUTHORIZE_URL") || raise("OAUTH2_AUTHORIZE_URL is missing")
+
+  config :peak_tracker,
+         :oauth_token_url,
+         System.get_env("OAUTH2_TOKEN_URL") || raise("OAUTH2_TOKEN_URL is missing")
+
+  config :peak_tracker,
+         :oauth_user_url,
+         System.get_env("OAUTH2_USER_URL") || raise("OAUTH2_USER_URL is missing")
+
+  config :peak_tracker,
+         :oauth_redirect_uri,
+         System.get_env("OAUTH2_REDIRECT_URI") || raise("OAUTH2_REDIRECT_URI is missing")
 
   # ## SSL Support
   #

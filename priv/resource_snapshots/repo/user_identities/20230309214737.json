@@ -95,11 +95,7 @@
     {
       "base_filter": null,
       "index_name": "user_identities_unique_on_strategy_and_uid_and_user_id_index",
-      "keys": [
-        "strategy",
-        "uid",
-        "user_id"
-      ],
+      "keys": ["strategy", "uid", "user_id"],
       "name": "unique_on_strategy_and_uid_and_user_id"
     }
   ],

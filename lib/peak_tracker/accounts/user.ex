@@ -1,4 +1,7 @@
 defmodule PeakTracker.Accounts.User do
+  @moduledoc """
+  This is the user resource for the application.
+  """
   use Ash.Resource,
     data_layer: AshPostgres.DataLayer,
     extensions: [AshAuthentication]

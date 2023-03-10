@@ -9,6 +9,7 @@ import Config
 
 config :peak_tracker, ecto_repos: [PeakTracker.Repo]
 config :peak_tracker, :ash_apis, [PeakTracker.Mountains, PeakTracker.Accounts]
+
 if Mix.env() != :test do
   # See https://ash-hq.org/docs/guides/ash/latest/tutorials/get-started#temporary-config
   config :ash, :use_all_identities_in_manage_relationship?, false

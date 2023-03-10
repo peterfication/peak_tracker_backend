@@ -1,4 +1,7 @@
 defmodule PeakTracker.Accounts.Registry do
+  @moduledoc """
+  The Ash registry for the accounts API.
+  """
   use Ash.Registry, extensions: [Ash.Registry.ResourceValidations]
 
   entries do

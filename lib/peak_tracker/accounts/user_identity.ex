@@ -1,4 +1,9 @@
 defmodule PeakTracker.Accounts.UserIdentity do
+  @moduledoc """
+  This is the identity resource for the user resource.
+
+  An identity comes from an OAuth2 provider and is used to authenticate a user.
+  """
   use Ash.Resource,
     data_layer: AshPostgres.DataLayer,
     extensions: [AshAuthentication.UserIdentity]

@@ -1,4 +1,7 @@
 defmodule PeakTracker.GetSecret do
+  @moduledoc """
+  This module is used to get secrets from the environment or a local default.
+  """
   use AshAuthentication.Secret
 
   @spec get_secret_from_env_or_local_default(atom, String.t()) ::
@@ -38,21 +41,33 @@ defmodule PeakTracker.GetSecret do
         PeakTracker.Accounts.User,
         _opts
       ),
-      do: get_secret_from_env_or_local_default(:oauth_authorize_url, "http://localhost:3000/oauth/authorize")
+      do:
+        get_secret_from_env_or_local_default(
+          :oauth_authorize_url,
+          "http://localhost:3000/oauth/authorize"
+        )
 
   def secret_for(
         [:authentication, :strategies, :peak_tracker_auth, :token_url],
         PeakTracker.Accounts.User,
         _opts
       ),
-      do: get_secret_from_env_or_local_default(:oauth_token_url, "http://localhost:3000/oauth/token")
+      do:
+        get_secret_from_env_or_local_default(
+          :oauth_token_url,
+          "http://localhost:3000/oauth/token"
+        )
 
   def secret_for(
         [:authentication, :strategies, :peak_tracker_auth, :user_url],
         PeakTracker.Accounts.User,
         _opts
       ),
-      do: get_secret_from_env_or_local_default(:oauth_user_url, "http://localhost:3000/oauth/userinfo")
+      do:
+        get_secret_from_env_or_local_default(
+          :oauth_user_url,
+          "http://localhost:3000/oauth/userinfo"
+        )
 
   def secret_for(
         [:authentication, :strategies, :peak_tracker_auth, :redirect_uri],
