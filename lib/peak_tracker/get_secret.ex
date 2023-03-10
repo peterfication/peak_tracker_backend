@@ -7,10 +7,10 @@ defmodule PeakTracker.GetSecret do
   @spec get_secret_from_env_or_local_default(atom, String.t()) ::
           {:ok, String.t()} | {:error, String.t()}
   defp get_secret_from_env_or_local_default(key, local_default) do
-    if Mix.env() in [:dev, :test] do
-      {:ok, local_default}
+    if System.get_env("PROD") do
+      Application.fetch_env(:peak_tracker, key)
     else
-      Application.fetch_env!(:peak_tracker, key)
+      {:ok, local_default}
     end
   end
 
