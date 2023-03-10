@@ -22,7 +22,6 @@ defmodule PeakTrackerWeb.Router do
 
     get "/", PageController, :root
 
-    sign_in_route()
     sign_out_route AuthController
     auth_routes_for PeakTracker.Accounts.User, to: AuthController
     reset_route []
