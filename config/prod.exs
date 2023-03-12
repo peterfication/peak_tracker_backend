@@ -1,5 +1,7 @@
 import Config
 
+config :peak_tracker, auth_host: "https://auth.peak-tracker.com"
+
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
 # when generating URLs.
