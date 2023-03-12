@@ -14,6 +14,12 @@
           <%= @current_user.email %>
         </span>
         <a
+          href={Application.fetch_env!(:peak_tracker, :auth_host)}
+          class="rounded-lg px-2 py-1 text-[0.8125rem] font-semibold leading-6 text-zinc-900 hover:bg-zinc-200/80 active:text-zinc-900/70"
+        >
+          Account
+        </a>
+        <a
           href="/sign-out"
           class="rounded-lg bg-zinc-100 px-2 py-1 text-[0.8125rem] font-semibold leading-6 text-zinc-900 hover:bg-zinc-200/80 active:text-zinc-900/70"
         >

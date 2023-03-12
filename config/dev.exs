@@ -1,5 +1,7 @@
 import Config
 
+config :peak_tracker, auth_host: "http://localhost:3000"
+
 # Configure your database
 config :peak_tracker, PeakTracker.Repo,
   hostname: "localhost",
