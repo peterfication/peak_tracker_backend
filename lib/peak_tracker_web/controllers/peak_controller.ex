@@ -1,21 +1,16 @@
 defmodule PeakTrackerWeb.PeakController do
   use PeakTrackerWeb, :controller
 
-  alias PeakTracker.Mountains
+  alias PeakTracker.Mountains.Peak
 
   def index(conn, _params) do
-    peaks =
-      Mountains.Peak
-      |> Ash.Query.sort([:name])
-      |> Mountains.read!()
+    {:ok, page} = Peak.list()
 
-    render(conn, :index, peaks: peaks)
+    render(conn, :index, peaks: page.results)
   end
 
   def show(conn, %{"slug" => slug}) do
-    peak =
-      Mountains.Peak
-      |> Mountains.get!(slug: slug)
+    peak = Peak.get!(slug)
 
     render(conn, :show, peak: peak)
   end

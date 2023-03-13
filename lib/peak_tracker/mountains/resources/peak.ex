@@ -9,6 +9,12 @@ defmodule PeakTracker.Mountains.Peak do
       AshGraphql.Resource
     ]
 
+  code_interface do
+    define_for PeakTracker.Mountains
+    define :get, action: :read, get_by: [:slug]
+    define :list, action: :read_paginated
+  end
+
   postgres do
     table("peaks")
     repo(PeakTracker.Repo)
@@ -27,6 +33,8 @@ defmodule PeakTracker.Mountains.Peak do
     defaults([:create, :read, :update, :destroy])
 
     read :read_paginated do
+      prepare build(sort: [slug: :asc])
+
       pagination(
         required?: true,
         offset?: true,
