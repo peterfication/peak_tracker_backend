@@ -13,6 +13,8 @@ defmodule PeakTracker.Mountains.Peak do
     define_for PeakTracker.Mountains
     define :get, action: :read, get_by: [:slug]
     define :list, action: :read_paginated
+    define :create, action: :create
+    define :update, action: :update
   end
 
   postgres do

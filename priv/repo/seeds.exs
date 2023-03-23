@@ -2,18 +2,12 @@
 
 for %{name: name, slug: slug} <- [
       %{name: "Zugspitze", slug: "zugspitze"},
-      %{name: "Mont Blanc", slug: "mont-blanc"}
+      %{name: "Mont Blanc", slug: "mont-blanc"},
+      %{name: "Mount Everest", slug: "mount-everest"},
     ] do
   # Create or update the peak
-  case PeakTracker.Mountains.get(PeakTracker.Mountains.Peak, slug: slug) do
-    {:ok, peak} ->
-      peak
-      |> Ash.Changeset.for_update(:update, %{name: name})
-      |> PeakTracker.Mountains.update!()
-
-    {:error, _} ->
-      PeakTracker.Mountains.Peak
-      |> Ash.Changeset.for_create(:create, %{name: name, slug: slug})
-      |> PeakTracker.Mountains.create!()
+  case PeakTracker.Mountains.Peak.get(slug) do
+    {:ok, peak} -> PeakTracker.Mountains.Peak.update!(peak, %{name: name})
+    {:error, _} ->PeakTracker.Mountains.Peak.create!(%{name: name, slug: slug})
   end
 end
