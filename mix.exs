@@ -55,7 +55,7 @@ defmodule PeakTracker.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:postgrex, ">= 0.0.0"},
       {:swoosh, "~> 1.3"},
-      {:tailwind, "~> 0.1.8", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.2.0", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"}
     ]
