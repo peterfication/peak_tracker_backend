@@ -35,7 +35,7 @@ defmodule PeakTracker.MixProject do
       {:ash, "~> 2.6.14"},
       {:ash_authentication, "~> 3.10.2"},
       {:ash_authentication_phoenix, "~> 1.6.2", override: true},
-      {:ash_graphql, "~> 0.22.4"},
+      {:ash_graphql, "~> 0.23.1"},
       {:ash_postgres, "~> 1.3.6"},
       {:bcrypt_elixir, "~> 3.0"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
