@@ -78,3 +78,7 @@ alias starti := start-interactive
 # Run the tests
 test:
   mix test
+
+# Run the tests with coverage
+test-coverage:
+  MIX_ENV=test mix coveralls
