@@ -123,6 +123,7 @@ jobs:
           - 5432:5432
     env:
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/peak_tracker_dev
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     steps:
       - uses: actions/checkout@v3
       - uses: erlef/setup-beam@v1
@@ -135,4 +136,10 @@ jobs:
           path: ./deps
           key: deps-${{ hashFiles('mix.lock') }}
       - run: mix deps.get
-      - run: mix test
+      - run: mix test --cover --export-coverage default
+      - run: mix test.coverage
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: default.coverdata
+          directory: cover
