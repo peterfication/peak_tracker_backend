@@ -9,9 +9,17 @@ defmodule PeakTracker.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       test_coverage: [
+        tool: ExCoveralls,
         summary: [
           threshold: 20
         ]
+      ],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.json": :test,
+        "coveralls.html": :test
       ],
       aliases: aliases(),
       deps: deps()
@@ -43,6 +51,7 @@ defmodule PeakTracker.MixProject do
       {:ash_graphql, "~> 0.23.1"},
       {:ash_postgres, "~> 1.3.6"},
       {:bcrypt_elixir, "~> 3.0"},
+      {:excoveralls, "~> 0.10", only: :test},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:ecto_sql, "~> 3.6"},
       {:esbuild, "~> 0.5", runtime: Mix.env() == :dev},
