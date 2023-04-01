@@ -44,6 +44,7 @@ defmodule PeakTracker.MixProject do
       {:finch, "~> 0.13"},
       {:floki, ">= 0.30.0", only: :test},
       {:gettext, "~> 0.20"},
+      {:hackney, "~> 1.8"},
       {:heroicons, "~> 0.5"},
       {:jason, "~> 1.2"},
       {:phoenix, "~> 1.7.0"},
@@ -54,6 +55,7 @@ defmodule PeakTracker.MixProject do
       {:phoenix_live_view, "~> 0.18.16"},
       {:plug_cowboy, "~> 2.5"},
       {:postgrex, ">= 0.0.0"},
+      {:sentry, "~> 8.0"},
       {:swoosh, "~> 1.3"},
       {:tailwind, "~> 0.2.0", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 0.6"},
@@ -71,7 +73,8 @@ defmodule PeakTracker.MixProject do
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": ["tailwind default", "esbuild default"],
-      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
+      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"],
+      sentry_recompile: ["compile", "deps.compile sentry --force"]
     ]
   end
 end
