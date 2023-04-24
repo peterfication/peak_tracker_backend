@@ -2,9 +2,42 @@ schema {
   query: RootQueryType
 }
 
+input PeakFilterElevation {
+  isNil: Boolean
+  eq: Int
+  notEq: Int
+  in: [Int!]
+  lessThan: Int
+  greaterThan: Int
+  lessThanOrEqual: Int
+  greaterThanOrEqual: Int
+}
+
 input PeakSortInput {
   order: SortOrder
   field: PeakSortField!
+}
+
+input PeakFilterWikidataId {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String!]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+}
+
+input PeakFilterOsmId {
+  isNil: Boolean
+  eq: Int
+  notEq: Int
+  in: [Int!]
+  lessThan: Int
+  greaterThan: Int
+  lessThanOrEqual: Int
+  greaterThanOrEqual: Int
 }
 
 "A relay page info"
@@ -69,6 +102,23 @@ type Peak implements Node {
   id: ID!
   name: String!
   slug: String!
+  osmId: Int!
+  latitude: Float!
+  longitude: Float!
+  elevation: Int!
+  wikipedia: String
+  wikidataId: String!
+}
+
+input PeakFilterWikipedia {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
 }
 
 ":peak edge"
@@ -108,6 +158,28 @@ enum SortOrder {
   ASC
 }
 
+input PeakFilterLongitude {
+  isNil: Boolean
+  eq: Float
+  notEq: Float
+  in: [Float!]
+  lessThan: Float
+  greaterThan: Float
+  lessThanOrEqual: Float
+  greaterThanOrEqual: Float
+}
+
+input PeakFilterLatitude {
+  isNil: Boolean
+  eq: Float
+  notEq: Float
+  in: [Float!]
+  lessThan: Float
+  greaterThan: Float
+  lessThanOrEqual: Float
+  greaterThanOrEqual: Float
+}
+
 input PeakFilterName {
   isNil: Boolean
   eq: String
@@ -125,10 +197,22 @@ input PeakFilterInput {
   id: PeakFilterId
   name: PeakFilterName
   slug: PeakFilterSlug
+  osmId: PeakFilterOsmId
+  latitude: PeakFilterLatitude
+  longitude: PeakFilterLongitude
+  elevation: PeakFilterElevation
+  wikipedia: PeakFilterWikipedia
+  wikidataId: PeakFilterWikidataId
 }
 
 enum PeakSortField {
   ID
   NAME
   SLUG
+  OSM_ID
+  LATITUDE
+  LONGITUDE
+  ELEVATION
+  WIKIPEDIA
+  WIKIDATA_ID
 }
