@@ -10,11 +10,11 @@ defmodule PeakTracker.Mountains.Peak do
     ]
 
   code_interface do
-    define_for PeakTracker.Mountains
-    define :get, action: :read, get_by: [:slug]
-    define :list, action: :read_paginated
-    define :create, action: :create
-    define :update, action: :update
+    define_for(PeakTracker.Mountains)
+    define(:get, action: :read, get_by: [:slug])
+    define(:list, action: :read_paginated)
+    define(:create, action: :create)
+    define(:update, action: :update)
   end
 
   postgres do
@@ -35,7 +35,7 @@ defmodule PeakTracker.Mountains.Peak do
     defaults([:create, :read, :update, :destroy])
 
     read :read_paginated do
-      prepare build(sort: [slug: :asc])
+      prepare(build(sort: [slug: :asc]))
 
       pagination(
         required?: true,
@@ -49,6 +49,8 @@ defmodule PeakTracker.Mountains.Peak do
 
   identities do
     identity(:slug_unique, [:slug])
+    identity(:osm_id_unique, [:osm_id])
+    identity(:wikidata_id_unique, [:wikidata_id])
   end
 
   attributes do
@@ -65,6 +67,35 @@ defmodule PeakTracker.Mountains.Peak do
     end
 
     attribute :slug, :string do
+      allow_nil?(false)
+    end
+
+    attribute :osm_id, :integer do
+      allow_nil?(false)
+    end
+
+    attribute :latitude, :float do
+      allow_nil?(false)
+    end
+
+    attribute :longitude, :float do
+      allow_nil?(false)
+    end
+
+    attribute :elevation, :integer do
+      allow_nil?(false)
+    end
+
+    # Wikipedia slug in the format "<ISO country code>:<slug>"
+    attribute :wikipedia, :string do
+      allow_nil?(true)
+    end
+
+    # Wikidata ID in the format "Q<id>"
+    #
+    # Can be used to access wikidata information
+    # E.g. https://www.wikidata.org/wiki/Q1
+    attribute :wikidata_id, :string do
       allow_nil?(false)
     end
 

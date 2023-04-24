@@ -14,7 +14,9 @@
     "erl_crash.dump",
     "node_modules",
     "priv/resource_snapshots",
-    "priv/static/assets"
+    "priv/static/assets",
+    "data",
+    "cover"
   ],
   "words": []
 }

@@ -14,7 +14,12 @@ defmodule PeakTracker.MountainsFixtures do
       attrs
       |> Enum.into(%{
         name: "some name",
-        slug: "some-slug"
+        slug: "some-slug",
+        osm_id: 123456789,
+        latitude: 40.1,
+        longitude: 10.2,
+        elevation: 1234,
+        wikidata_id: "Q12345",
       })
     )
     |> PeakTracker.Mountains.create!()

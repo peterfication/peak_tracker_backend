@@ -1,0 +1,62 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.60 f4c14d41",
+  "osm3s": {
+    "timestamp_osm_base": "2023-04-24T14:22:02Z",
+    "timestamp_areas_base": "2023-04-24T09:08:22Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+    {
+      "type": "node",
+      "id": 27384190,
+      "lat": 47.421215,
+      "lon": 10.986297,
+      "tags": {
+        "alt_name": "Zugspitze (Ostgipfel)",
+        "ele": "2962",
+        "importance": "national",
+        "name": "Zugspitze",
+        "natural": "peak",
+        "prominence": "1746",
+        "source:prominence": "2962-1216 (Fernpass)",
+        "summit:cross": "yes",
+        "wikidata": "Q3375",
+        "wikipedia": "de:Zugspitze"
+      }
+    },
+    {
+      "type": "node",
+      "id": 26862634,
+      "lat": 51.7991251,
+      "lon": 10.6156365,
+      "tags": {
+        "alt_name": "Blocksberg",
+        "ele": "1141",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Brocken_vom_Torfhaus.jpg",
+        "importance": "national",
+        "name": "Brocken",
+        "name:da": "Bloksbjerg",
+        "name:de": "Brocken",
+        "name:he": "ברוקן",
+        "name:ja": "ブロッケン山",
+        "name:la": "Mons ruptus",
+        "name:lt": "Brokeno kalnas",
+        "name:ru": "Брокен",
+        "name:zh": "布罗肯峰",
+        "natural": "peak",
+        "old_name": "Brockenberg",
+        "old_name:~1176": "broke",
+        "old_name:~1401": "Brockenberg",
+        "old_name:~1495": "mons ruptus",
+        "old_name:~1511": "Brockin",
+        "old_name:~1531": "Brogken",
+        "old_name:~1540": "Brokenberg",
+        "old_name:~1589": "Brackenberg",
+        "wikidata": "Q155721",
+        "wikipedia": "de:Brocken",
+        "wikipedia:en": "Brocken"
+      }
+    }
+  ]
+}
