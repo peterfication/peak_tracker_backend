@@ -3,6 +3,7 @@ autoshow
 citext
 datastructure
 datetime
+defmock
 describedby
 ecto
 enctype
@@ -14,6 +15,7 @@ gettext
 graphi
 heroicons
 hexpm
+httpoison
 inet
 invalidtoken
 justfile

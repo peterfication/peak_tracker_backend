@@ -26,6 +26,11 @@ config :peak_tracker, PeakTrackerWeb.Endpoint,
 # In test we don't send emails.
 config :peak_tracker, PeakTracker.Mailer, adapter: Swoosh.Adapters.Test
 
+config :peak_tracker, PeakTracker.Mountains.Services.Peaks.FetchFromOverpass,
+  http_client: PeakTracker.HttpClientMock
+
+config :mox, global: true
+
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
 
