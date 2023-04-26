@@ -10,6 +10,17 @@ defmodule PeakTracker.Mountains.Services.Peaks.Import do
   @type location :: FetchFromOverpass.location()
 
   @doc """
+  Import the peaks of the whole world by executing the import with
+  (-90, -180) and (90, 180).
+
+  NOTE: This will take a long time to execute and will call the Overpass API
+  many times.
+  """
+  def import_world do
+    execute(%{latitude: -90, longitude: -180}, %{latitude: 90, longitude: 180})
+  end
+
+  @doc """
   Import peaks from Overpass API into the database. The import is split
   up in to bounding boxes of size 1 degree in each direction.
 
