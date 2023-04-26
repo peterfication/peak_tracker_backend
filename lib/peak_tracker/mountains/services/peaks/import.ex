@@ -10,16 +10,18 @@ defmodule PeakTracker.Mountains.Services.Peaks.Import do
   @type location :: FetchFromOverpass.location()
 
   @doc """
-  Import peaks from Overpass API into the database.
+  Import peaks from Overpass API into the database. The import is split
+  up in to bounding boxes of size 1 degree in each direction.
 
   ## Examples
 
-      iex> PeakTracker.Mountains.Services.Peaks.Import.execute
+      iex> location_a = %{latitude: 46, longitude: 9}
+      iex> location_b = %{latitude: 48, longitude: 11}
+      iex> PeakTracker.Mountains.Services.Peaks.Import.execute(location_a, location_b)
   """
-  def execute do
+  @spec expand_locations(location, location) :: nil
+  def execute(location_a, location_b) do
     # TODO: Add tests for this method
-    location_a = %{latitude: 46, longitude: 9}
-    location_b = %{latitude: 48, longitude: 11}
 
     # TODO: Use Task.async_stream here to add concurrency to the import.
     Enum.each(expand_locations(location_a, location_b), fn location ->
