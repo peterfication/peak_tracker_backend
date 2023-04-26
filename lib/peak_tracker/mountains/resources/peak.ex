@@ -12,6 +12,7 @@ defmodule PeakTracker.Mountains.Peak do
   code_interface do
     define_for(PeakTracker.Mountains)
     define(:get, action: :read, get_by: [:slug])
+    define(:get_by_osm_id, action: :read, get_by: [:osm_id])
     define(:list, action: :read_paginated)
     define(:create, action: :create)
     define(:update, action: :update)
@@ -50,7 +51,6 @@ defmodule PeakTracker.Mountains.Peak do
   identities do
     identity(:slug_unique, [:slug])
     identity(:osm_id_unique, [:osm_id])
-    identity(:wikidata_id_unique, [:wikidata_id])
   end
 
   attributes do
@@ -96,7 +96,7 @@ defmodule PeakTracker.Mountains.Peak do
     # Can be used to access wikidata information
     # E.g. https://www.wikidata.org/wiki/Q1
     attribute :wikidata_id, :string do
-      allow_nil?(false)
+      allow_nil?(true)
     end
 
     timestamps()

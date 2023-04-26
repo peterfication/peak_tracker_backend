@@ -29,7 +29,8 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpassTest do
           "lat" => 40.51,
           "lon" => -105.1,
           "tags" => %{
-            "ele" => "3500",
+            # We truncate floating point values as we ignore centimeters in elevation
+            "ele" => "3500.5",
             "name" => "Peak 1",
             "natural" => "peak",
             "wikidata" => "Q1",
@@ -43,6 +44,39 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpassTest do
           "tags" => %{
             "ele" => "3700",
             "name" => "Peak 2",
+            "natural" => "peak"
+          }
+        },
+        # Peak without a name
+        %{
+          "id" => 3,
+          "lat" => 40.8,
+          "lon" => -104.9,
+          "tags" => %{
+            "ele" => "3700",
+            "name" => nil,
+            "natural" => "peak"
+          }
+        },
+        # Peak with a name that's too short
+        %{
+          "id" => 3,
+          "lat" => 40.8,
+          "lon" => -104.9,
+          "tags" => %{
+            "ele" => "3700",
+            "name" => "P",
+            "natural" => "peak"
+          }
+        },
+        # Peak without an elevation
+        %{
+          "id" => 4,
+          "lat" => 40.8,
+          "lon" => -104.9,
+          "tags" => %{
+            "ele" => nil,
+            "name" => "Peak 4",
             "natural" => "peak"
           }
         }
@@ -66,7 +100,7 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpassTest do
              latitude: 40.51,
              longitude: -105.1,
              name: "Peak 1",
-             elevation: "3500",
+             elevation: 3500,
              wikidata_id: "Q1",
              wikipedia: "en:Peak 1"
            }
@@ -76,7 +110,7 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpassTest do
              latitude: 40.8,
              longitude: -104.9,
              name: "Peak 2",
-             elevation: "3700",
+             elevation: 3700,
              wikidata_id: nil,
              wikipedia: nil
            }

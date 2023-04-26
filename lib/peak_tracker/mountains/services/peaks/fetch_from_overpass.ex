@@ -22,7 +22,7 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpass do
           longitude: float(),
           osm_id: integer(),
           name: String.t(),
-          elevation: String.t(),
+          elevation: integer(),
           wikidata_id: String.t(),
           wikipedia: String.t()
         }
@@ -37,26 +37,19 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpass do
   elevation, as well as wikidata ID and wikipedia information of the mountain peaks
   within the bounding box.
 
+  Peaks without an elevation or without a name are filtered out.
+
   ## Examples
 
-      iex> min_location = %{latitude: 47.3, longitude: 10.8}
-      iex> max_location = %{latitude: 47.5, longitude: 11.2}
-      iex> {:ok, peaks} = PeakTracker.Mountains.Services.Peaks.FetchFromOverpass.execute(min_location, max_location)
+      iex> location_a = %{latitude: 47.3, longitude: 10.8}
+      iex> location_b = %{latitude: 47.5, longitude: 11.2}
+      iex> {:ok, peaks} = PeakTracker.Mountains.Services.Peaks.FetchFromOverpass.execute(location_a, location_b)
       iex> Enum.count(peaks)
       220
   """
   @spec execute(location, location) :: {:ok, [peak]} | {:error, String.t()}
-  def execute(
-        %{
-          latitude: min_latitude,
-          longitude: min_longitude
-        },
-        %{
-          latitude: max_latitude,
-          longitude: max_longitude
-        }
-      ) do
-    query = build_query(min_latitude, min_longitude, max_latitude, max_longitude)
+  def execute(location_a, location_b) do
+    query = build_query(location_a, location_b)
     response = execute_query(query)
 
     case response do
@@ -71,12 +64,12 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpass do
     end
   end
 
-  @spec build_query(coordinate, coordinate, coordinate, coordinate) :: String.t()
-  defp build_query(min_lat, min_lon, max_lat, max_lon) do
+  @spec build_query(location, location) :: String.t()
+  defp build_query(location_a, location_b) do
     """
     [out:json];
     (node["natural"="peak"]
-    (#{min_lat},#{min_lon},#{max_lat},#{max_lon});
+    (#{location_a.latitude},#{location_a.longitude},#{location_b.latitude},#{location_b.longitude});
     );
     out body;
     """
@@ -94,13 +87,22 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpass do
     {:ok, decoded} = Jason.decode(body)
     elements = decoded["elements"]
 
-    Enum.map(elements, fn element ->
+    filtered_elements =
+      Enum.filter(elements, fn element ->
+        Map.get(element["tags"], "name") != nil &&
+          String.length(Map.get(element["tags"], "name")) >= 2 &&
+          Map.get(element["tags"], "ele") != nil
+      end)
+
+    Enum.map(filtered_elements, fn element ->
+      {elevation, _} = Integer.parse(Map.get(element["tags"], "ele"))
+
       %{
         latitude: element["lat"],
         longitude: element["lon"],
         osm_id: element["id"],
         name: Map.get(element["tags"], "name"),
-        elevation: Map.get(element["tags"], "ele"),
+        elevation: elevation,
         wikidata_id: Map.get(element["tags"], "wikidata"),
         wikipedia: Map.get(element["tags"], "wikipedia")
       }
