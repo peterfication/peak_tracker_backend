@@ -13,23 +13,40 @@ defmodule Location do
   @type coordinate :: float()
 
   @doc """
-  Takes a bounding box of two locations that have full degree geo coordinates
-  and returns a map of bounding boxes in the size of one degree in each direction.
+  Takes a bounding box of two locations that will be truncated to have full
+  degree geo coordinates and returns a map of bounding boxes in the size of
+  one degree in each direction.
+
+  If the two locations have the same whole degree, the list will be an element
+  with just one location which is the truncated location.
   """
   @spec expand_locations(t, t) :: [t]
   def expand_locations(location_a, location_b) do
-    latitude_a = trunc(location_a.latitude)
-    longitude_a = trunc(location_a.longitude)
-    latitude_b = trunc(location_b.latitude)
-    longitude_b = trunc(location_b.longitude)
+    truncated_location_a = truncate_location(location_a)
+    truncated_location_b = truncate_location(location_b)
 
-    # TODO: convert into a guard
-    if latitude_a == latitude_b && longitude_a == longitude_b do
-      []
+    if equals(truncated_location_a, truncated_location_b) do
+      [truncated_location_a]
     else
-      for latitude <- latitude_a..latitude_b,
-          longitude <- longitude_a..longitude_b,
+      for latitude <- truncated_location_a.latitude..truncated_location_b.latitude,
+          longitude <- truncated_location_a.longitude..truncated_location_b.longitude,
           do: %Location{latitude: latitude, longitude: longitude}
     end
   end
+
+  @doc """
+  Checks if two locations are equal by comparing their latitude and longitude.
+  """
+  @spec equals(t, t) :: Boolean
+  def equals(location_a, location_b),
+    do:
+      location_a.latitude == location_b.latitude &&
+        location_a.longitude == location_b.longitude
+
+  @doc """
+  Truncates the latitude and longitude of a location to a whole degree.
+  """
+  @spec truncate_location(t) :: t
+  def truncate_location(location),
+    do: %Location{latitude: trunc(location.latitude), longitude: trunc(location.longitude)}
 end
