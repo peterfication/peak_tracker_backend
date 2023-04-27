@@ -1,5 +1,10 @@
 # Script for populating the database.
 
-location_a = %{latitude: 47, longitude: 10}
-location_b = %{latitude: 47, longitude: 11}
-PeakTracker.Mountains.Services.Peaks.Import.execute(location_a, location_b)
+# This just imports some peaks into the database. In order to import all peaks
+# of the whole world, PeakTracker.Mountains.Services.Peaks.ImportWorld.execute()
+# has to be used, but this will take a long time to succeed because of the amount
+# of data.
+PeakTracker.Mountains.Services.Peaks.Import.execute({
+  %Location{latitude: 47, longitude: 10},
+  %Location{latitude: 47, longitude: 11}
+})
