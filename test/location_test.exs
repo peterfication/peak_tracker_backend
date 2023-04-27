@@ -17,13 +17,8 @@ defmodule PeakTracker.Mountains.Services.Peaks.ImportTest do
       expected_result = [
         %Location{latitude: 1, longitude: 1},
         %Location{latitude: 1, longitude: 2},
-        %Location{latitude: 1, longitude: 3},
         %Location{latitude: 2, longitude: 1},
         %Location{latitude: 2, longitude: 2},
-        %Location{latitude: 2, longitude: 3},
-        %Location{latitude: 3, longitude: 1},
-        %Location{latitude: 3, longitude: 2},
-        %Location{latitude: 3, longitude: 3}
       ]
 
       assert Subject.expand_locations(location_a, location_b) == expected_result
@@ -36,12 +31,10 @@ defmodule PeakTracker.Mountains.Services.Peaks.ImportTest do
 
       assert Subject.expand_locations(location_a, location_b) == [
                %Location{latitude: 1, longitude: 1},
-               %Location{latitude: 1, longitude: 2}
              ]
 
       assert Subject.expand_locations(location_a, location_c) == [
                %Location{latitude: 1, longitude: 1},
-               %Location{latitude: 2, longitude: 1}
              ]
     end
 
@@ -53,19 +46,12 @@ defmodule PeakTracker.Mountains.Services.Peaks.ImportTest do
         %Location{latitude: -2, longitude: -2},
         %Location{latitude: -2, longitude: -1},
         %Location{latitude: -2, longitude: 0},
-        %Location{latitude: -2, longitude: 1},
         %Location{latitude: -1, longitude: -2},
         %Location{latitude: -1, longitude: -1},
         %Location{latitude: -1, longitude: 0},
-        %Location{latitude: -1, longitude: 1},
         %Location{latitude: 0, longitude: -2},
         %Location{latitude: 0, longitude: -1},
         %Location{latitude: 0, longitude: 0},
-        %Location{latitude: 0, longitude: 1},
-        %Location{latitude: 1, longitude: -2},
-        %Location{latitude: 1, longitude: -1},
-        %Location{latitude: 1, longitude: 0},
-        %Location{latitude: 1, longitude: 1}
       ]
 
       assert Subject.expand_locations(location_a, location_b) == expected_result
@@ -78,13 +64,8 @@ defmodule PeakTracker.Mountains.Services.Peaks.ImportTest do
       expected_result = [
         %Location{latitude: 1, longitude: 1},
         %Location{latitude: 1, longitude: 2},
-        %Location{latitude: 1, longitude: 3},
         %Location{latitude: 2, longitude: 1},
         %Location{latitude: 2, longitude: 2},
-        %Location{latitude: 2, longitude: 3},
-        %Location{latitude: 3, longitude: 1},
-        %Location{latitude: 3, longitude: 2},
-        %Location{latitude: 3, longitude: 3}
       ]
 
       assert Subject.expand_locations(location_a, location_b) == expected_result

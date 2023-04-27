@@ -25,12 +25,20 @@ defmodule Location do
     truncated_location_a = truncate_location(location_a)
     truncated_location_b = truncate_location(location_b)
 
-    if equals(truncated_location_a, truncated_location_b) do
-      [truncated_location_a]
-    else
-      for latitude <- truncated_location_a.latitude..truncated_location_b.latitude,
-          longitude <- truncated_location_a.longitude..truncated_location_b.longitude,
-          do: %Location{latitude: latitude, longitude: longitude}
+    cond do
+      equals(truncated_location_a, truncated_location_b) ->
+        [truncated_location_a]
+
+      truncated_location_a.latitude == truncated_location_b.latitude ||
+          truncated_location_a.longitude == truncated_location_b.longitude ->
+        [truncated_location_a]
+
+      true ->
+        # The -1 on truncated location b is necessary because later on the boxes generated
+        # from the locations will be from the returned location +1 in each direction.
+        for latitude <- truncated_location_a.latitude..(truncated_location_b.latitude - 1),
+            longitude <- truncated_location_a.longitude..(truncated_location_b.longitude - 1),
+            do: %Location{latitude: latitude, longitude: longitude}
     end
   end
 

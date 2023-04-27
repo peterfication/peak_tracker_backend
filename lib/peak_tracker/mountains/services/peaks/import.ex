@@ -32,7 +32,7 @@ defmodule PeakTracker.Mountains.Services.Peaks.Import do
 
   @spec fetch_and_save(location) :: [peak] | nil
   defp fetch_and_save(location_a) do
-    location_b = %{latitude: location_a.latitude + 1, longitude: location_a.longitude + 1}
+    location_b = %Location{latitude: location_a.latitude + 1, longitude: location_a.longitude + 1}
     result = FetchFromOverpass.execute(location_a, location_b)
 
     # TODO: Return tuples here and in the other methods
