@@ -62,6 +62,7 @@ defmodule PeakTracker.MixProject do
       {:heroicons, "~> 0.5"},
       {:httpoison, "~> 1.8"},
       {:jason, "~> 1.2"},
+      {:mock, "~> 0.3", only: :test},
       {:mox, "~> 1.0", only: :test},
       {:phoenix, "~> 1.7.0"},
       {:phoenix_ecto, "~> 4.4"},
