@@ -27,6 +27,20 @@ defmodule LocationTest do
       assert Subject.expand_locations({location_a, location_b}) == expected_result
     end
 
+    test "returns the correct bounding boxes when the input bounding box is not sorted" do
+      location_b = %Location{latitude: 1, longitude: 3}
+      location_a = %Location{latitude: 3, longitude: 1}
+
+      expected_result = [
+        {%Location{latitude: 1, longitude: 1}, %Location{latitude: 2, longitude: 2}},
+        {%Location{latitude: 1, longitude: 2}, %Location{latitude: 2, longitude: 3}},
+        {%Location{latitude: 2, longitude: 1}, %Location{latitude: 3, longitude: 2}},
+        {%Location{latitude: 2, longitude: 2}, %Location{latitude: 3, longitude: 3}}
+      ]
+
+      assert Subject.expand_locations({location_a, location_b}) == expected_result
+    end
+
     test "when the locations have the same latitude or longitude returns the correct boxes" do
       location_a = %Location{latitude: 1, longitude: 1}
       location_b = %Location{latitude: 1, longitude: 2}
