@@ -9,6 +9,8 @@ defmodule PeakTracker.Mountains.Peak do
       AshGraphql.Resource
     ]
 
+  @type t :: t()
+
   code_interface do
     define_for(PeakTracker.Mountains)
     define(:get, action: :read, get_by: [:slug])

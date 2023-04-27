@@ -6,8 +6,9 @@ defmodule PeakTracker.Mountains.Services.Peaks.Import do
   alias PeakTracker.Mountains.Peak
   alias PeakTracker.Mountains.Services.Peaks.FetchFromOverpass
 
-  @type peak_data :: FetchFromOverpass.peak()
-  @type location :: FetchFromOverpass.location()
+  @type peak_data :: FetchFromOverpass.peak_data()
+  @type location :: Location.t()
+  @type peak :: Peak.t()
 
   @doc """
   Import the peaks of the whole world by executing the import with
@@ -17,7 +18,10 @@ defmodule PeakTracker.Mountains.Services.Peaks.Import do
   many times.
   """
   def import_world do
-    execute(%{latitude: -90, longitude: -180}, %{latitude: 90, longitude: 180})
+    execute(
+      %Location{latitude: -90.0, longitude: -180.0},
+      %Location{latitude: 90.0, longitude: 180.0}
+    )
   end
 
   @doc """
@@ -30,59 +34,37 @@ defmodule PeakTracker.Mountains.Services.Peaks.Import do
       iex> location_b = %{latitude: 48, longitude: 11}
       iex> PeakTracker.Mountains.Services.Peaks.Import.execute(location_a, location_b)
   """
-  @spec expand_locations(location, location) :: nil
+  @spec execute(location, location) :: :ok
   def execute(location_a, location_b) do
     # TODO: Add tests for this method
 
     # TODO: Use Task.async_stream here to add concurrency to the import.
-    Enum.each(expand_locations(location_a, location_b), fn location ->
+    Enum.each(Location.expand_locations(location_a, location_b), fn location ->
       fetch_and_save(location)
     end)
   end
 
-  @doc """
-  Takes a bounding box of two locations that have full degree geo coordinates
-  and returns a map of bounding boxes in the size of one degree in each direction.
-  """
-  @spec expand_locations(location, location) :: [location]
-  def expand_locations(location_a, location_b) do
-    # TODO: Create a location struct
-    latitude_a = trunc(location_a.latitude)
-    longitude_a = trunc(location_a.longitude)
-    latitude_b = trunc(location_b.latitude)
-    longitude_b = trunc(location_b.longitude)
-
-    # TODO: convert into a guard
-    if latitude_a == latitude_b && longitude_a == longitude_b do
-      []
-    else
-      for latitude <- latitude_a..latitude_b,
-          longitude <- longitude_a..longitude_b,
-          do: %{latitude: latitude, longitude: longitude}
-    end
-  end
-
-  @spec fetch_and_save(location) :: [Peak.t()] | nil
+  @spec fetch_and_save(location) :: [peak] | nil
   defp fetch_and_save(location_a) do
     location_b = %{latitude: location_a.latitude + 1, longitude: location_a.longitude + 1}
     result = FetchFromOverpass.execute(location_a, location_b)
 
     # TODO: Return tuples here and in the other methods
     case result do
-      {:ok, peaks} ->
-        save_peaks(peaks)
+      {:ok, peak_data_list} ->
+        save_peaks(peak_data_list)
 
       {:error, message} ->
         IO.puts(message)
     end
   end
 
-  @spec save_peaks([peak_data]) :: [Peak.t()]
-  defp save_peaks(peaks) do
-    Enum.map(peaks, fn peak -> save_peak(peak) end)
+  @spec save_peaks([peak_data]) :: [peak]
+  defp save_peaks(peak_data_list) do
+    Enum.map(peak_data_list, fn peak_data -> save_peak(peak_data) end)
   end
 
-  @spec save_peak(peak_data) :: Peak.t()
+  @spec save_peak(peak_data) :: peak
   defp save_peak(peak_data) do
     case Peak.get_by_osm_id(peak_data[:osm_id]) do
       {:ok, peak} ->
@@ -93,7 +75,7 @@ defmodule PeakTracker.Mountains.Services.Peaks.Import do
     end
   end
 
-  @spec update_peak(Peak.t(), peak_data) :: Peak.t()
+  @spec update_peak(peak, peak_data) :: peak
   defp update_peak(peak, peak_data) do
     Peak.update!(
       peak,
@@ -108,7 +90,7 @@ defmodule PeakTracker.Mountains.Services.Peaks.Import do
     )
   end
 
-  @spec create_peak(peak_data) :: Peak.t()
+  @spec create_peak(peak_data) :: peak
   defp create_peak(peak_data) do
     Peak.create!(%{
       osm_id: peak_data[:osm_id],

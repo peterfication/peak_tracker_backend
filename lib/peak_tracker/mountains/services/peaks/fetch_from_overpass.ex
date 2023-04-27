@@ -14,10 +14,10 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpass do
 
   alias HTTPoison, as: HttpClient
 
-  @type coordinate :: float()
-  @type location :: %{latitude: coordinate, longitude: coordinate}
+  @type coordinate :: Location.coordinate()
+  @type location :: Location.t()
   @type element :: map()
-  @type peak :: %{
+  @type peak_data :: %{
           latitude: float(),
           longitude: float(),
           osm_id: integer(),
@@ -47,7 +47,7 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpass do
       iex> Enum.count(peaks)
       220
   """
-  @spec execute(location, location) :: {:ok, [peak]} | {:error, String.t()}
+  @spec execute(location, location) :: {:ok, [peak_data]} | {:error, String.t()}
   def execute(location_a, location_b) do
     query = build_query(location_a, location_b)
     response = execute_query(query)
@@ -82,7 +82,7 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpass do
     http_client.post(@overpass_url, query, headers)
   end
 
-  @spec decode_result(String.t()) :: [peak]
+  @spec decode_result(String.t()) :: [peak_data]
   defp decode_result(body) do
     {:ok, decoded} = Jason.decode(body)
     elements = decoded["elements"]
