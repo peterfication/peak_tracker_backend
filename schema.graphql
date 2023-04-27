@@ -22,7 +22,7 @@ input PeakFilterWikidataId {
   isNil: Boolean
   eq: String
   notEq: String
-  in: [String!]
+  in: [String]
   lessThan: String
   greaterThan: String
   lessThanOrEqual: String
@@ -107,7 +107,7 @@ type Peak implements Node {
   longitude: Float!
   elevation: Int!
   wikipedia: String
-  wikidataId: String!
+  wikidataId: String
 }
 
 input PeakFilterWikipedia {

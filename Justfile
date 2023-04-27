@@ -5,6 +5,10 @@ default:
 # Run the things that are run in CI
 ci: spellcheck format graphql-schema-dump lint test
 
+# Open an Elixir console
+console:
+  iex -S mix
+
 # Migrate the dev database
 db-migrate:
   mix ash_postgres.migrate
