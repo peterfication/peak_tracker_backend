@@ -15,7 +15,7 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpass do
   alias HTTPoison, as: HttpClient
 
   @type coordinate :: Location.coordinate()
-  @type location :: Location.t()
+  @type bounding_box :: Location.bounding_box()
   @type element :: map()
   @type peak_data :: %{
           latitude: float(),
@@ -47,9 +47,9 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpass do
       iex> Enum.count(peaks)
       220
   """
-  @spec execute(location, location) :: {:ok, [peak_data]} | {:error, String.t()}
-  def execute(location_a, location_b) do
-    query = build_query(location_a, location_b)
+  @spec execute(bounding_box) :: {:ok, [peak_data]} | {:error, String.t()}
+  def execute(bounding_box) do
+    query = build_query(bounding_box)
     response = execute_query(query)
 
     case response do
@@ -64,8 +64,8 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpass do
     end
   end
 
-  @spec build_query(location, location) :: String.t()
-  defp build_query(location_a, location_b) do
+  @spec build_query(bounding_box) :: String.t()
+  defp build_query({location_a, location_b}) do
     """
     [out:json];
     (node["natural"="peak"]

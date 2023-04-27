@@ -7,7 +7,7 @@ defmodule PeakTracker.Mountains.Services.Peaks.Import do
   alias PeakTracker.Mountains.Services.Peaks.FetchFromOverpass
 
   @type peak_data :: FetchFromOverpass.peak_data()
-  @type location :: Location.t()
+  @type bounding_box :: Location.bounding_box()
   @type peak :: Peak.t()
 
   @doc """
@@ -20,23 +20,20 @@ defmodule PeakTracker.Mountains.Services.Peaks.Import do
       iex> location_b = %{latitude: 48, longitude: 11}
       iex> PeakTracker.Mountains.Services.Peaks.Import.execute(location_a, location_b)
   """
-  @spec execute(location, location) :: :ok
-  def execute(location_a, location_b) do
+  @spec execute(bounding_box) :: :ok
+  def execute(bounding_box) do
     # TODO: Add tests for this method
 
     # TODO: Use Task.async_stream here to add concurrency to the import.
-    Enum.each(Location.expand_locations(location_a, location_b), fn location ->
-      fetch_and_save(location)
+    Enum.each(Location.expand_locations(bounding_box), fn bounding_box ->
+      fetch_and_save(bounding_box)
     end)
   end
 
-  @spec fetch_and_save(location) :: [peak] | nil
-  defp fetch_and_save(location_a) do
-    location_b = %Location{latitude: location_a.latitude + 1, longitude: location_a.longitude + 1}
-    result = FetchFromOverpass.execute(location_a, location_b)
-
+  @spec fetch_and_save(bounding_box) :: [peak] | nil
+  defp fetch_and_save(bounding_box) do
     # TODO: Return tuples here and in the other methods
-    case result do
+    case FetchFromOverpass.execute(bounding_box) do
       {:ok, peak_data_list} ->
         save_peaks(peak_data_list)
 

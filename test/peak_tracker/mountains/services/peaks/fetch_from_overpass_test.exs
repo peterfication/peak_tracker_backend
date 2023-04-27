@@ -7,8 +7,10 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpassTest do
   setup :verify_on_exit!
 
   test "execute/2 returns mountain peak data within a bounding box" do
-    min_location = %{latitude: 40.5, longitude: -105.2}
-    max_location = %{latitude: 41.0, longitude: -104.8}
+    bounding_box = {
+      %Location{latitude: 40.5, longitude: -105.2},
+      %Location{latitude: 41.0, longitude: -104.8}
+    }
 
     url = "https://overpass-api.de/api/interpreter"
 
@@ -91,7 +93,7 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpassTest do
       end
     )
 
-    {:ok, peaks} = FetchFromOverpass.execute(min_location, max_location)
+    {:ok, peaks} = FetchFromOverpass.execute(bounding_box)
 
     assert Enum.count(peaks) == 2
 

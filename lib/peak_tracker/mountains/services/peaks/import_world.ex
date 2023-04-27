@@ -13,9 +13,9 @@ defmodule PeakTracker.Mountains.Services.Peaks.ImportWorld do
   See module doc.
   """
   def execute do
-    Import.execute(
+    Import.execute({
       %Location{latitude: -90.0, longitude: -180.0},
       %Location{latitude: 90.0, longitude: 180.0}
-    )
+    })
   end
 end

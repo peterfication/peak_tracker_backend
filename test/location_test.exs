@@ -1,13 +1,16 @@
-defmodule PeakTracker.Mountains.Services.Peaks.ImportTest do
+defmodule LocationTest do
   use ExUnit.Case
 
   alias Location, as: Subject
 
   describe "expand_locations/2" do
-    test "returns a list with just the function" do
-      location = %Location{latitude: 1, longitude: 1}
+    test "when the truncated locations are the same returns a list with only one bounding box" do
+      location_a = %Location{latitude: 1, longitude: 1}
+      location_b = %Location{latitude: 1.1, longitude: 1.1}
 
-      assert Subject.expand_locations(location, location) == [location]
+      assert Subject.expand_locations({location_a, location_b}) == [
+               {location_a, Location.add_one_degree(location_a)}
+             ]
     end
 
     test "returns all combinations of latitude and longitude between two locations" do
@@ -15,26 +18,38 @@ defmodule PeakTracker.Mountains.Services.Peaks.ImportTest do
       location_b = %Location{latitude: 3, longitude: 3}
 
       expected_result = [
-        %Location{latitude: 1, longitude: 1},
-        %Location{latitude: 1, longitude: 2},
-        %Location{latitude: 2, longitude: 1},
-        %Location{latitude: 2, longitude: 2},
+        {%Location{latitude: 1, longitude: 1}, %Location{latitude: 2, longitude: 2}},
+        {%Location{latitude: 1, longitude: 2}, %Location{latitude: 2, longitude: 3}},
+        {%Location{latitude: 2, longitude: 1}, %Location{latitude: 3, longitude: 2}},
+        {%Location{latitude: 2, longitude: 2}, %Location{latitude: 3, longitude: 3}}
       ]
 
-      assert Subject.expand_locations(location_a, location_b) == expected_result
+      assert Subject.expand_locations({location_a, location_b}) == expected_result
     end
 
-    test "returns a single point when the locations have the same latitude or longitude" do
+    test "when the locations have the same latitude or longitude returns the correct boxes" do
       location_a = %Location{latitude: 1, longitude: 1}
       location_b = %Location{latitude: 1, longitude: 2}
-      location_c = %Location{latitude: 2, longitude: 1}
 
-      assert Subject.expand_locations(location_a, location_b) == [
-               %Location{latitude: 1, longitude: 1},
+      assert Subject.expand_locations({location_a, location_b}) == [
+               {
+                 %Location{latitude: 1, longitude: 1},
+                 %Location{latitude: 2, longitude: 2}
+               }
              ]
 
-      assert Subject.expand_locations(location_a, location_c) == [
-               %Location{latitude: 1, longitude: 1},
+      location_a = %Location{latitude: 1, longitude: 1}
+      location_b = %Location{latitude: 1, longitude: 3}
+
+      assert Subject.expand_locations({location_a, location_b}) == [
+               {
+                 %Location{latitude: 1, longitude: 1},
+                 %Location{latitude: 2, longitude: 2}
+               },
+               {
+                 %Location{latitude: 1, longitude: 2},
+                 %Location{latitude: 2, longitude: 3}
+               }
              ]
     end
 
@@ -43,18 +58,18 @@ defmodule PeakTracker.Mountains.Services.Peaks.ImportTest do
       location_b = %Location{latitude: 1, longitude: 1}
 
       expected_result = [
-        %Location{latitude: -2, longitude: -2},
-        %Location{latitude: -2, longitude: -1},
-        %Location{latitude: -2, longitude: 0},
-        %Location{latitude: -1, longitude: -2},
-        %Location{latitude: -1, longitude: -1},
-        %Location{latitude: -1, longitude: 0},
-        %Location{latitude: 0, longitude: -2},
-        %Location{latitude: 0, longitude: -1},
-        %Location{latitude: 0, longitude: 0},
+        {%Location{latitude: -2, longitude: -2}, %Location{latitude: -1, longitude: -1}},
+        {%Location{latitude: -2, longitude: -1}, %Location{latitude: -1, longitude: 0}},
+        {%Location{latitude: -2, longitude: 0}, %Location{latitude: -1, longitude: 1}},
+        {%Location{latitude: -1, longitude: -2}, %Location{latitude: 0, longitude: -1}},
+        {%Location{latitude: -1, longitude: -1}, %Location{latitude: 0, longitude: 0}},
+        {%Location{latitude: -1, longitude: 0}, %Location{latitude: 0, longitude: 1}},
+        {%Location{latitude: 0, longitude: -2}, %Location{latitude: 1, longitude: -1}},
+        {%Location{latitude: 0, longitude: -1}, %Location{latitude: 1, longitude: 0}},
+        {%Location{latitude: 0, longitude: 0}, %Location{latitude: 1, longitude: 1}}
       ]
 
-      assert Subject.expand_locations(location_a, location_b) == expected_result
+      assert Subject.expand_locations({location_a, location_b}) == expected_result
     end
 
     test "truncates decimal values" do
@@ -62,13 +77,13 @@ defmodule PeakTracker.Mountains.Services.Peaks.ImportTest do
       location_b = %Location{latitude: 3.4, longitude: 3.6}
 
       expected_result = [
-        %Location{latitude: 1, longitude: 1},
-        %Location{latitude: 1, longitude: 2},
-        %Location{latitude: 2, longitude: 1},
-        %Location{latitude: 2, longitude: 2},
+        {%Location{latitude: 1, longitude: 1}, %Location{latitude: 2, longitude: 2}},
+        {%Location{latitude: 1, longitude: 2}, %Location{latitude: 2, longitude: 3}},
+        {%Location{latitude: 2, longitude: 1}, %Location{latitude: 3, longitude: 2}},
+        {%Location{latitude: 2, longitude: 2}, %Location{latitude: 3, longitude: 3}}
       ]
 
-      assert Subject.expand_locations(location_a, location_b) == expected_result
+      assert Subject.expand_locations({location_a, location_b}) == expected_result
     end
   end
 
