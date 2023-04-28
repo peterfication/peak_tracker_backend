@@ -33,6 +33,10 @@ graphql-schema-dump:
 lint:
   yarn lint && mix credo --strict
 
+# List all available mix commands
+mix-list:
+  mix help
+
 # Build the application in dev mode
 release-dev:
   mix release
