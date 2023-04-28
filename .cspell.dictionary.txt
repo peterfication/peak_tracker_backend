@@ -47,6 +47,7 @@ thead
 topbar
 trunc
 unistd
+unscale
 upsert
 validtoken
 zugspitze

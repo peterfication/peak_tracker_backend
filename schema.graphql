@@ -16,6 +16,7 @@ input PeakFilterElevation {
 input PeakSortInput {
   order: SortOrder
   field: PeakSortField!
+  scaledByUserInput: PeakScaledByUserFieldInput
 }
 
 input PeakFilterWikidataId {
@@ -61,6 +62,29 @@ interface Node {
   id: ID!
 }
 
+input PeakFilterScaleCount {
+  isNil: Boolean
+  eq: Int
+  notEq: Int
+  in: [Int]
+  lessThan: Int
+  greaterThan: Int
+  lessThanOrEqual: Int
+  greaterThanOrEqual: Int
+}
+
+input PeakFilterScaledByUser {
+  input: PeakScaledByUserFieldInput
+  isNil: Boolean
+  eq: Boolean
+  notEq: Boolean
+  in: [Boolean!]
+  lessThan: Boolean
+  greaterThan: Boolean
+  lessThanOrEqual: Boolean
+  greaterThanOrEqual: Boolean
+}
+
 type RootQueryType {
   peaks(
     "How to sort the records in the response"
@@ -98,6 +122,10 @@ input PeakFilterSlug {
   greaterThanOrEqual: String
 }
 
+input PeakScaledByUserFieldInput {
+  userId: ID!
+}
+
 type Peak implements Node {
   id: ID!
   name: String!
@@ -108,6 +136,8 @@ type Peak implements Node {
   elevation: Int!
   wikipedia: String
   wikidataId: String
+  scaleCount: Int!
+  scaledByUser(userId: ID!): Boolean
 }
 
 input PeakFilterWikipedia {
@@ -203,6 +233,8 @@ input PeakFilterInput {
   elevation: PeakFilterElevation
   wikipedia: PeakFilterWikipedia
   wikidataId: PeakFilterWikidataId
+  scaleCount: PeakFilterScaleCount
+  scaledByUser: PeakFilterScaledByUser
 }
 
 enum PeakSortField {
@@ -215,4 +247,6 @@ enum PeakSortField {
   ELEVATION
   WIKIPEDIA
   WIKIDATA_ID
+  SCALED_BY_USER
+  SCALE_COUNT
 }

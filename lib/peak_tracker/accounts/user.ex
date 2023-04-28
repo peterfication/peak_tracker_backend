@@ -69,4 +69,10 @@ defmodule PeakTracker.Accounts.User do
   identities do
     identity(:email, [:email])
   end
+
+  relationships do
+    has_many(:scales, PeakTracker.Mountains.Scale) do
+      api PeakTracker.Mountains
+    end
+  end
 end
