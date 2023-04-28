@@ -35,7 +35,9 @@ defmodule Location do
   with just one location which is the truncated location.
   """
   @spec! expand_locations(bounding_box()) :: [bounding_box()]
-  def expand_locations(bounding_box) when is_bounding_box(bounding_box) do
+  def expand_locations(bounding_box) when not is_bounding_box(bounding_box), do: []
+
+  def expand_locations(bounding_box) do
     %{
       min_latitude: min_latitude,
       max_latitude: max_latitude,
@@ -50,8 +52,6 @@ defmodule Location do
       {location, add_one_degree(location) |> elem(1)}
     end
   end
-
-  def expand_locations(_bounding_box), do: []
 
   ##
   # Get the minimum and maximum latitude and longitude of a bounding box.
@@ -77,30 +77,32 @@ defmodule Location do
   Checks if two locations are equal by comparing their latitude and longitude.
   """
   @spec! equals(t(), t()) :: boolean()
-  def equals(location_a, location_b) when is_location(location_a) and is_location(location_b),
+  def equals(location_a, location_b)
+      when not is_location(location_a) or not is_location(location_b),
+      do: false
+
+  def equals(location_a, location_b),
     do:
       location_a.latitude == location_b.latitude &&
         location_a.longitude == location_b.longitude
-
-  def equals(_location_a, _location_b), do: false
 
   @doc """
   Truncates the latitude and longitude of a location to a whole degree.
   """
   @spec! truncate_location(t()) :: {:ok, t()} | {:error, String.t()}
-  def truncate_location(location) when is_location(location),
-    do: {:ok, %Location{latitude: trunc(location.latitude), longitude: trunc(location.longitude)}}
+  def truncate_location(location) when not is_location(location),
+    do: {:error, "Expected a location, got #{inspect(location)}"}
 
   def truncate_location(location),
-    do: {:error, "Expected a location, got #{inspect(location)}"}
+    do: {:ok, %Location{latitude: trunc(location.latitude), longitude: trunc(location.longitude)}}
 
   @doc """
   Adds one degree to the latitude and longitude of a location.
   """
   @spec! add_one_degree(t()) :: {:ok, t()} | {:error, String.t()}
-  def add_one_degree(location) when is_location(location),
-    do: {:ok, %Location{latitude: location.latitude + 1, longitude: location.longitude + 1}}
+  def add_one_degree(location) when not is_location(location),
+    do: {:error, "Expected a location, got #{inspect(location)}"}
 
   def add_one_degree(location),
-    do: {:error, "Expected a location, got #{inspect(location)}"}
+    do: {:ok, %Location{latitude: location.latitude + 1, longitude: location.longitude + 1}}
 end
