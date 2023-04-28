@@ -10,5 +10,6 @@ defmodule PeakTracker.Mountains.Registry do
 
   entries do
     entry(PeakTracker.Mountains.Peak)
+    entry(PeakTracker.Mountains.Scale)
   end
 end

@@ -17,6 +17,10 @@ db-migrate:
 db-reset:
   mix ecto.reset
 
+# Rollback the dev database
+db-rollback:
+  mix ash_postgres.rollback
+
 # Seed the dev database
 db-seed:
   mix ecto.seed
@@ -32,6 +36,10 @@ graphql-schema-dump:
 # Lint Elixir files with credo and Javascript files with ESLint
 lint:
   yarn lint && mix credo --strict
+
+# List all available mix commands
+mix-list:
+  mix help
 
 # Build the application in dev mode
 release-dev:

@@ -4,7 +4,7 @@ defmodule PeakTracker.Schema do
   """
   use Absinthe.Schema
 
-  @apis [PeakTracker.Mountains]
+  @apis [PeakTracker.Mountains, PeakTracker.Accounts]
 
   use AshGraphql, apis: @apis
 

@@ -9,6 +9,10 @@ defmodule PeakTracker.Mountains.Peak do
       AshGraphql.Resource
     ]
 
+  require Ecto.Query
+
+  alias PeakTracker.Mountains.Scale
+
   @type t :: t()
 
   code_interface do
@@ -18,6 +22,9 @@ defmodule PeakTracker.Mountains.Peak do
     define(:list, action: :read_paginated)
     define(:create, action: :create)
     define(:update, action: :update)
+
+    define :scale
+    define :unscale
   end
 
   postgres do
@@ -47,6 +54,32 @@ defmodule PeakTracker.Mountains.Peak do
         keyset?: true,
         default_limit: 20
       )
+    end
+
+    update :scale do
+      accept []
+
+      manual fn changeset, %{actor: actor} ->
+        with {:ok, _} <- Scale.scale(changeset.data.id, actor: actor) do
+          {:ok, changeset.data}
+        end
+      end
+    end
+
+    update :unscale do
+      accept []
+
+      manual fn changeset, %{actor: actor} ->
+        scale =
+          Ecto.Query.from(scale in Scale,
+            where: scale.user_id == ^actor.id,
+            where: scale.peak_id == ^changeset.data.id
+          )
+
+        PeakTracker.Repo.delete_all(scale)
+
+        {:ok, changeset.data}
+      end
     end
   end
 
@@ -102,5 +135,21 @@ defmodule PeakTracker.Mountains.Peak do
     end
 
     timestamps()
+  end
+
+  relationships do
+    has_many(:scales, PeakTracker.Mountains.Scale)
+  end
+
+  calculations do
+    calculate :scaled_by_user, :boolean, expr(exists(scales, user_id == ^arg(:user_id))) do
+      argument :user_id, :uuid do
+        allow_nil? false
+      end
+    end
+  end
+
+  aggregates do
+    count :scale_count, :scales
   end
 end
