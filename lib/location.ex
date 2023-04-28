@@ -18,7 +18,11 @@ defmodule Location do
   defguard is_location(value)
            when is_map(value) and
                   is_number(value.latitude) and
-                  is_number(value.longitude)
+                  is_number(value.longitude) and
+                  value.latitude >= -90 and
+                  value.latitude <= 90 and
+                  value.longitude >= -180 and
+                  value.longitude <= 180
 
   defguard is_bounding_box(value)
            when is_tuple(value) and
