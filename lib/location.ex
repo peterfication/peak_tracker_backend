@@ -3,15 +3,28 @@ defmodule Location do
   A location represents a latitude and longitude.
   """
 
+  use TypeCheck
+
   @enforce_keys [:latitude, :longitude]
   defstruct [:latitude, :longitude]
 
-  @type t :: %__MODULE__{
-          latitude: coordinate,
-          latitude: coordinate
-        }
-  @type coordinate :: float()
-  @type bounding_box :: {t, t}
+  @type! t :: %__MODULE__{
+           latitude: coordinate(),
+           latitude: coordinate()
+         }
+  @type! coordinate :: float() | integer()
+  @type! bounding_box :: {t(), t()}
+
+  defguard is_location(value)
+           when is_map(value) and
+                  is_number(value.latitude) and
+                  is_number(value.longitude)
+
+  defguard is_bounding_box(value)
+           when is_tuple(value) and
+                  tuple_size(value) == 2 and
+                  is_location(value |> elem(0)) and
+                  is_location(value |> elem(1))
 
   @doc """
   Takes a bounding box of two locations that will be truncated to have full
@@ -21,8 +34,8 @@ defmodule Location do
   If the two locations have the same whole degree, the list will be an element
   with just one location which is the truncated location.
   """
-  @spec expand_locations(bounding_box) :: [bounding_box]
-  def expand_locations(bounding_box) do
+  @spec! expand_locations(bounding_box()) :: [bounding_box()]
+  def expand_locations(bounding_box) when is_bounding_box(bounding_box) do
     %{
       min_latitude: min_latitude,
       max_latitude: max_latitude,
@@ -34,21 +47,23 @@ defmodule Location do
         longitude <- min_longitude..max(min_longitude, max_longitude - 1) do
       location = %Location{latitude: latitude, longitude: longitude}
 
-      {location, add_one_degree(location)}
+      {location, add_one_degree(location) |> elem(1)}
     end
   end
 
+  def expand_locations(_bounding_box), do: []
+
   ##
   # Get the minimum and maximum latitude and longitude of a bounding box.
-  @spec min_max_longitude_and_latitude(bounding_box) :: %{
-          max_latitude: float(),
-          max_longitude: float(),
-          min_latitude: float(),
-          min_longitude: float()
-        }
+  @spec! min_max_longitude_and_latitude(bounding_box()) :: %{
+           max_latitude: coordinate(),
+           max_longitude: coordinate(),
+           min_latitude: coordinate(),
+           min_longitude: coordinate()
+         }
   defp min_max_longitude_and_latitude({location_a, location_b}) do
-    truncated_location_a = truncate_location(location_a)
-    truncated_location_b = truncate_location(location_b)
+    truncated_location_a = truncate_location(location_a) |> elem(1)
+    truncated_location_b = truncate_location(location_b) |> elem(1)
 
     %{
       max_latitude: max(truncated_location_a.latitude, truncated_location_b.latitude),
@@ -61,23 +76,31 @@ defmodule Location do
   @doc """
   Checks if two locations are equal by comparing their latitude and longitude.
   """
-  @spec equals(t, t) :: Boolean
-  def equals(location_a, location_b),
+  @spec! equals(t(), t()) :: boolean()
+  def equals(location_a, location_b) when is_location(location_a) and is_location(location_b),
     do:
       location_a.latitude == location_b.latitude &&
         location_a.longitude == location_b.longitude
 
+  def equals(_location_a, _location_b), do: false
+
   @doc """
   Truncates the latitude and longitude of a location to a whole degree.
   """
-  @spec truncate_location(t) :: t
+  @spec! truncate_location(t()) :: {:ok, t()} | {:error, String.t()}
+  def truncate_location(location) when is_location(location),
+    do: {:ok, %Location{latitude: trunc(location.latitude), longitude: trunc(location.longitude)}}
+
   def truncate_location(location),
-    do: %Location{latitude: trunc(location.latitude), longitude: trunc(location.longitude)}
+    do: {:error, "Expected a location, got #{inspect(location)}"}
 
   @doc """
   Adds one degree to the latitude and longitude of a location.
   """
-  @spec add_one_degree(t) :: t
+  @spec! add_one_degree(t()) :: {:ok, t()} | {:error, String.t()}
+  def add_one_degree(location) when is_location(location),
+    do: {:ok, %Location{latitude: location.latitude + 1, longitude: location.longitude + 1}}
+
   def add_one_degree(location),
-    do: %Location{latitude: location.latitude + 1, longitude: location.longitude + 1}
+    do: {:error, "Expected a location, got #{inspect(location)}"}
 end

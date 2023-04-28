@@ -37,6 +37,7 @@ proto
 rarr
 rebar
 sigterm
+spectest
 starti
 stylesheet
 tabindex

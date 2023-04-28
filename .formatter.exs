@@ -6,7 +6,8 @@
     :ash_postgres,
     :ecto,
     :ecto_sql,
-    :phoenix
+    :phoenix,
+    :type_check
   ],
   subdirectories: ["priv/*/migrations"],
   plugins: [Phoenix.LiveView.HTMLFormatter],

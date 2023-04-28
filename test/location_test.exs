@@ -1,7 +1,10 @@
 defmodule LocationTest do
   use ExUnit.Case
+  use TypeCheck.ExUnit
 
   alias Location, as: Subject
+
+  spectest(Location, except: [min_max_longitude_and_latitude: 1])
 
   describe "expand_locations/2" do
     test "when the truncated locations are the same returns a list with only one bounding box" do
@@ -9,7 +12,7 @@ defmodule LocationTest do
       location_b = %Location{latitude: 1.1, longitude: 1.1}
 
       assert Subject.expand_locations({location_a, location_b}) == [
-               {location_a, Location.add_one_degree(location_a)}
+               {location_a, Location.add_one_degree(location_a) |> elem(1)}
              ]
     end
 
@@ -104,35 +107,35 @@ defmodule LocationTest do
   describe "truncate_location/1" do
     test "truncates positive latitude and longitude to whole degrees" do
       location = %Location{latitude: 51.5074, longitude: 0.1278}
-      result = Subject.truncate_location(location)
+      result = Subject.truncate_location(location) |> elem(1)
       assert result.latitude == 51
       assert result.longitude == 0
     end
 
     test "truncates negative latitude and longitude to whole degrees" do
       location = %Location{latitude: -51.5074, longitude: -0.1278}
-      result = Subject.truncate_location(location)
+      result = Subject.truncate_location(location) |> elem(1)
       assert result.latitude == -51
       assert result.longitude == 0
     end
 
     test "truncates positive latitude and negative longitude to whole degrees" do
       location = %Location{latitude: 51.5074, longitude: -0.1278}
-      result = Subject.truncate_location(location)
+      result = Subject.truncate_location(location) |> elem(1)
       assert result.latitude == 51
       assert result.longitude == 0
     end
 
     test "truncates negative latitude and positive longitude to whole degrees" do
       location = %Location{latitude: -51.5074, longitude: 0.1278}
-      result = Subject.truncate_location(location)
+      result = Subject.truncate_location(location) |> elem(1)
       assert result.latitude == -51
       assert result.longitude == 0
     end
 
     test "returns the same values when already at whole degrees" do
       location = %Location{latitude: 51, longitude: 0}
-      result = Subject.truncate_location(location)
+      result = Subject.truncate_location(location) |> elem(1)
       assert result.latitude == 51
       assert result.longitude == 0
     end

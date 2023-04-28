@@ -51,10 +51,10 @@ defmodule PeakTracker.MixProject do
       {:ash_graphql, "~> 0.23.1"},
       {:ash_postgres, "~> 1.3.6"},
       {:bcrypt_elixir, "~> 3.0"},
-      {:excoveralls, "~> 0.10", only: :test},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:ecto_sql, "~> 3.6"},
       {:esbuild, "~> 0.5", runtime: Mix.env() == :dev},
+      {:excoveralls, "~> 0.10", only: :test},
       {:finch, "~> 0.13"},
       {:floki, ">= 0.30.0", only: :test},
       {:gettext, "~> 0.20"},
@@ -76,7 +76,8 @@ defmodule PeakTracker.MixProject do
       {:swoosh, "~> 1.3"},
       {:tailwind, "~> 0.2.0", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 1.0"}
+      {:telemetry_poller, "~> 1.0"},
+      {:type_check, "~> 0.13.3"}
     ]
   end
 
