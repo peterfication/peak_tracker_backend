@@ -17,6 +17,10 @@ db-migrate:
 db-reset:
   mix ecto.reset
 
+# Rollback the dev database
+db-rollback:
+  mix ash_postgres.rollback
+
 # Seed the dev database
 db-seed:
   mix ecto.seed
