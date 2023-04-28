@@ -10,22 +10,24 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpass do
   within the bounding box.
   """
 
+  use TypeCheck
+
   @overpass_url "https://overpass-api.de/api/interpreter"
 
   alias HTTPoison, as: HttpClient
 
-  @type coordinate :: Location.coordinate()
-  @type bounding_box :: Location.bounding_box()
-  @type element :: map()
-  @type peak_data :: %{
-          latitude: float(),
-          longitude: float(),
-          osm_id: integer(),
-          name: String.t(),
-          elevation: integer(),
-          wikidata_id: String.t(),
-          wikipedia: String.t()
-        }
+  @type! coordinate :: Location.coordinate()
+  @type! bounding_box :: Location.bounding_box()
+  @type! element :: map()
+  @type! peak_data :: %{
+           latitude: float(),
+           longitude: float(),
+           osm_id: integer(),
+           name: String.t(),
+           elevation: integer(),
+           wikidata_id: String.t() | nil,
+           wikipedia: String.t() | nil
+         }
 
   @doc """
   Fetches mountain peak data from the Overpass API within a bounding box
@@ -47,7 +49,7 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpass do
       iex> Enum.count(peaks)
       220
   """
-  @spec execute(bounding_box) :: {:ok, [peak_data]} | {:error, String.t()}
+  @spec! execute(bounding_box()) :: {:ok, [peak_data()]} | {:error, String.t()}
   def execute(bounding_box) do
     query = build_query(bounding_box)
     response = execute_query(query)
@@ -64,7 +66,7 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpass do
     end
   end
 
-  @spec build_query(bounding_box) :: String.t()
+  @spec! build_query(bounding_box()) :: String.t()
   defp build_query({location_a, location_b}) do
     """
     [out:json];
@@ -82,7 +84,7 @@ defmodule PeakTracker.Mountains.Services.Peaks.FetchFromOverpass do
     http_client.post(@overpass_url, query, headers)
   end
 
-  @spec decode_result(String.t()) :: [peak_data]
+  @spec! decode_result(String.t()) :: [peak_data()]
   defp decode_result(body) do
     {:ok, decoded} = Jason.decode(body)
     elements = decoded["elements"]

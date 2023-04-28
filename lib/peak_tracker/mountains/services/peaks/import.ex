@@ -20,7 +20,7 @@ defmodule PeakTracker.Mountains.Services.Peaks.Import do
       iex> location_b = %{latitude: 48, longitude: 11}
       iex> PeakTracker.Mountains.Services.Peaks.Import.execute(location_a, location_b)
   """
-  @spec execute(bounding_box) :: :ok
+  @spec execute(bounding_box()) :: :ok
   def execute(bounding_box) do
     # TODO: Use Task.async_stream here to add concurrency to the import.
     Enum.each(Location.expand_locations(bounding_box), fn bounding_box ->
@@ -28,7 +28,7 @@ defmodule PeakTracker.Mountains.Services.Peaks.Import do
     end)
   end
 
-  @spec fetch_and_save(bounding_box) :: :ok
+  @spec fetch_and_save(bounding_box()) :: :ok
   defp fetch_and_save(bounding_box) do
     case FetchFromOverpass.execute(bounding_box) do
       {:ok, peak_data_list} ->
@@ -39,12 +39,12 @@ defmodule PeakTracker.Mountains.Services.Peaks.Import do
     end
   end
 
-  @spec save_peaks([peak_data]) :: :ok
+  @spec save_peaks([peak_data()]) :: :ok
   defp save_peaks(peak_data_list) do
     Enum.each(peak_data_list, fn peak_data -> save_peak(peak_data) end)
   end
 
-  @spec save_peak(peak_data) :: {:ok, peak} | {:error, String.t()}
+  @spec save_peak(peak_data()) :: {:ok, peak()} | {:error, String.t()}
   defp save_peak(peak_data) do
     case Peak.get_by_osm_id(peak_data[:osm_id]) do
       {:ok, peak} ->
@@ -55,7 +55,7 @@ defmodule PeakTracker.Mountains.Services.Peaks.Import do
     end
   end
 
-  @spec update_peak(peak, peak_data) :: {:ok, peak} | {:error, String.t()}
+  @spec update_peak(peak(), peak_data()) :: {:ok, peak()} | {:error, String.t()}
   defp update_peak(peak, peak_data) do
     Peak.update!(
       peak,
@@ -70,7 +70,7 @@ defmodule PeakTracker.Mountains.Services.Peaks.Import do
     )
   end
 
-  @spec create_peak(peak_data) :: {:ok, peak} | {:error, String.t()}
+  @spec create_peak(peak_data()) :: {:ok, peak()} | {:error, String.t()}
   defp create_peak(peak_data) do
     Peak.create!(%{
       osm_id: peak_data[:osm_id],
