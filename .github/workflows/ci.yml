@@ -58,11 +58,7 @@ jobs:
             priv/plts
           key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('mix.lock') }}
       - run: mix deps.get
-      - run: mix format
-      - name: Check that no changes exist
-        run: |
-          git status
-          git diff-index --quiet HEAD --
+      - run: mix format --check-formatted
 
   lint-yarn:
     runs-on: ubuntu-latest
