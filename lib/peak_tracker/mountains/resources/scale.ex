@@ -32,24 +32,29 @@ defmodule PeakTracker.Mountains.Scale do
     defaults([:read, :destroy])
 
     create :scale do
-      upsert_identity :unique_user_and_peak
       upsert?(true)
+      upsert_identity(:unique_user_and_peak_and_scaled_on)
 
       argument :peak_id, :uuid do
         allow_nil?(false)
       end
 
       change(set_attribute(:peak_id, arg(:peak_id)))
+      change(set_attribute(:scaled_on, DateTime.to_date(DateTime.utc_now())))
       change(relate_actor(:user))
     end
   end
 
   identities do
-    identity(:unique_user_and_peak, [:user_id, :peak_id])
+    identity(:unique_user_and_peak_and_scaled_on, [:user_id, :peak_id, :scaled_on])
   end
 
   attributes do
     uuid_primary_key(:id)
+
+    attribute(:scaled_on, :date) do
+      allow_nil?(false)
+    end
 
     timestamps()
   end
