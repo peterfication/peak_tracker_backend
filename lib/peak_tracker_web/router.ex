@@ -1,46 +1,53 @@
 defmodule PeakTrackerWeb.Router do
   use PeakTrackerWeb, :router
   use AshAuthentication.Phoenix.Router
+  import AshAuthentication.Phoenix.LiveSession
 
   pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_live_flash
-    plug :put_root_layout, {PeakTrackerWeb.Layouts, :root}
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
-    plug :load_from_session
+    plug(:accepts, ["html"])
+    plug(:fetch_session)
+    plug(:fetch_live_flash)
+    plug(:put_root_layout, {PeakTrackerWeb.Layouts, :root})
+    plug(:protect_from_forgery)
+    plug(:put_secure_browser_headers)
+    plug(:load_from_session)
   end
 
   pipeline :api do
-    plug :accepts, ["json"]
-    plug :load_from_bearer
+    plug(:accepts, ["json"])
+    plug(:load_from_bearer)
   end
 
   scope "/", PeakTrackerWeb do
-    pipe_through :browser
+    pipe_through(:browser)
 
-    get "/", PageController, :root
+    get("/", PageController, :root)
 
-    sign_out_route AuthController
-    auth_routes_for PeakTracker.Accounts.User, to: AuthController
-    reset_route []
+    sign_out_route(AuthController)
+    auth_routes_for(PeakTracker.Accounts.User, to: AuthController)
 
-    get "/peaks", PeakController, :index
-    get "/peaks/:slug", PeakController, :show
+    scope "/peaks", PeakLive do
+      ash_authentication_live_session :authenticated_peaks,
+        on_mount: {PeakTrackerWeb.LiveUserAuth, :live_user_optional} do
+        live("/", Index, :index)
+        live("/:slug", Show, :show)
+      end
+    end
   end
 
   scope "/api", PeakTrackerWeb do
-    pipe_through :api
+    pipe_through(:api)
   end
 
   scope "/" do
-    forward "/gql", Absinthe.Plug, schema: PeakTracker.Schema
+    forward("/gql", Absinthe.Plug, schema: PeakTracker.Schema)
 
-    forward "/playground",
-            Absinthe.Plug.GraphiQL,
-            schema: PeakTracker.Schema,
-            interface: :playground
+    forward(
+      "/playground",
+      Absinthe.Plug.GraphiQL,
+      schema: PeakTracker.Schema,
+      interface: :playground
+    )
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
@@ -53,10 +60,10 @@ defmodule PeakTrackerWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/dev" do
-      pipe_through :browser
+      pipe_through(:browser)
 
-      live_dashboard "/dashboard", metrics: PeakTrackerWeb.Telemetry
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
+      live_dashboard("/dashboard", metrics: PeakTrackerWeb.Telemetry)
+      forward("/mailbox", Plug.Swoosh.MailboxPreview)
     end
   end
 end

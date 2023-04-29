@@ -1,0 +1,29 @@
+<.header>
+  Peak <%= @peak.name %>
+  <:subtitle>
+    <%= @peak.latitude %>, <%= @peak.longitude %>
+  </:subtitle>
+</.header>
+
+<%= if @current_user == nil do %>
+  <.link navigate={~p"/auth/user/peak_tracker_auth"}>
+    <Heroicons.flag class="h-4 w-4" />
+  </.link>
+<% else %>
+  <%= if @peak.scaled_by_user do %>
+    <button phx-click="unscale" phx-value-id={@peak.id}>
+      <Heroicons.flag class="h-4 w-4 fill-blue-700" />
+    </button>
+  <% else %>
+    <button phx-click="scale" phx-value-id={@peak.id}>
+      <Heroicons.flag class="h-4 w-4" />
+    </button>
+  <% end %>
+<% end %>
+<%= @peak.scale_count %>
+
+<.list>
+  <:item title="Wikidata"><%= @peak.wikidata_id %></:item>
+</.list>
+
+<.back navigate={~p"/peaks"}>Back to peaks</.back>
