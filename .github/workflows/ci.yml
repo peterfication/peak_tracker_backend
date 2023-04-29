@@ -56,7 +56,7 @@ jobs:
             deps
             _build
             priv/plts
-          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('mix.lock') }}
+          key: deps-${{ hashFiles('mix.lock') }}
       - run: mix deps.get
       - run: mix format --check-formatted
 
@@ -94,7 +94,7 @@ jobs:
             deps
             _build
             priv/plts
-          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('mix.lock') }}
+          key: deps-${{ hashFiles('mix.lock') }}
       - run: mix deps.get
       - run: mix credo
 
@@ -113,7 +113,7 @@ jobs:
             deps
             _build
             priv/plts
-          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('mix.lock') }}
+          key: deps-${{ hashFiles('mix.lock') }}
       - run: mix deps.get
       - run: mix absinthe.schema.sdl --schema PeakTracker.Schema
       - name: Check that no changes exist
@@ -146,7 +146,7 @@ jobs:
             deps
             _build
             priv/plts
-          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('mix.lock') }}
+          key: deps-test-${{ hashFiles('mix.lock') }}
       - run: mix deps.get
       - run: mix coveralls.json
       - name: Upload coverage reports to Codecov
