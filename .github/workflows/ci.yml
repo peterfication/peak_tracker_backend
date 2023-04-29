@@ -98,6 +98,26 @@ jobs:
       - run: mix deps.get
       - run: mix credo
 
+  dialyzer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: erlef/setup-beam@v1
+        with:
+          version-file: .tool-versions
+          version-type: "strict"
+      - name: Cache Elixir dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            deps
+            _build
+            priv/plts
+          key: deps-dialyzer-${{ hashFiles('mix.lock') }}
+      - run: mix deps.get
+      - run: mix dialyzer --plt
+      - run: mix dialyzer
+
   graphql-schema-check:
     runs-on: ubuntu-latest
     steps:

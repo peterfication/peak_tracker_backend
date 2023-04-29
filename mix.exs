@@ -52,6 +52,7 @@ defmodule PeakTracker.MixProject do
       {:ash_postgres, "~> 1.3.6"},
       {:bcrypt_elixir, "~> 3.0"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.3", only: [:dev], runtime: false},
       {:ecto_sql, "~> 3.6"},
       {:esbuild, "~> 0.5", runtime: Mix.env() == :dev},
       {:excoveralls, "~> 0.10", only: :test},
