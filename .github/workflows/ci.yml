@@ -52,10 +52,17 @@ jobs:
       - name: Cache Elixir dependencies
         uses: actions/cache@v3
         with:
-          path: ./deps
-          key: deps-${{ hashFiles('mix.lock') }}
+          path: |
+            deps
+            _build
+            priv/plts
+          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('mix.lock') }}
       - run: mix deps.get
       - run: mix format
+      - name: Check that no changes exist
+        run: |
+          git status
+          git diff-index --quiet HEAD --
 
   lint-yarn:
     runs-on: ubuntu-latest
@@ -87,8 +94,11 @@ jobs:
       - name: Cache Elixir dependencies
         uses: actions/cache@v3
         with:
-          path: ./deps
-          key: deps-${{ hashFiles('mix.lock') }}
+          path: |
+            deps
+            _build
+            priv/plts
+          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('mix.lock') }}
       - run: mix deps.get
       - run: mix credo
 
@@ -103,8 +113,11 @@ jobs:
       - name: Cache Elixir dependencies
         uses: actions/cache@v3
         with:
-          path: ./deps
-          key: deps-${{ hashFiles('mix.lock') }}
+          path: |
+            deps
+            _build
+            priv/plts
+          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('mix.lock') }}
       - run: mix deps.get
       - run: mix absinthe.schema.sdl --schema PeakTracker.Schema
       - name: Check that no changes exist
@@ -133,8 +146,11 @@ jobs:
       - name: Cache Elixir dependencies
         uses: actions/cache@v3
         with:
-          path: ./deps
-          key: deps-${{ hashFiles('mix.lock') }}
+          path: |
+            deps
+            _build
+            priv/plts
+          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('mix.lock') }}
       - run: mix deps.get
       - run: mix coveralls.json
       - name: Upload coverage reports to Codecov
