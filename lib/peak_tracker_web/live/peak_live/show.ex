@@ -3,6 +3,7 @@ defmodule PeakTrackerWeb.PeakLive.Show do
 
   alias PeakTracker.Mountains.Peak
   alias PeakTrackerWeb.Endpoint
+  alias PeakTrackerWeb.PeakLive.Utils
 
   @impl true
   def mount(_params, _session, socket) do
@@ -11,7 +12,7 @@ defmodule PeakTrackerWeb.PeakLive.Show do
 
   @impl true
   def handle_params(%{"slug" => slug}, _, socket) do
-    peak = Peak.get!(slug, load: peak_load(socket.assigns.current_user))
+    peak = Peak.get!(slug, load: Utils.peak_load(socket.assigns.current_user))
 
     Endpoint.subscribe("peaks:scaled:#{peak.id}")
     Endpoint.subscribe("peaks:unscaled:#{peak.id}")
@@ -32,7 +33,6 @@ defmodule PeakTrackerWeb.PeakLive.Show do
     {:noreply, assign(socket, :peak, peak)}
   end
 
-  @impl true
   def handle_event("unscale", %{"id" => _id}, socket) do
     peak =
       socket.assigns.peak
@@ -42,31 +42,14 @@ defmodule PeakTrackerWeb.PeakLive.Show do
     {:noreply, assign(socket, :peak, peak)}
   end
 
-  def handle_info(%Phoenix.Socket.Broadcast{topic: "peaks:scaled:" <> _id}, socket) do
-    {:noreply,
-     assign(
-       socket,
-       :peak,
-       socket.assigns.peak |> Map.put(:scale_count, socket.assigns.peak.scale_count + 1)
-     )}
-  end
-
   @impl true
-  def handle_info(%Phoenix.Socket.Broadcast{topic: "peaks:unscaled:" <> _id}, socket) do
-    {:noreply,
-     assign(
-       socket,
-       :peak,
-       socket.assigns.peak |> Map.put(:scale_count, socket.assigns.peak.scale_count - 1)
-     )}
+  def handle_info(%Phoenix.Socket.Broadcast{topic: "peaks:scaled:" <> _id}, socket) do
+    peak = socket.assigns.peak |> Map.put(:scale_count, socket.assigns.peak.scale_count + 1)
+    {:noreply, assign(socket, :peak, peak)}
   end
 
-  defp peak_load(current_user) when current_user == nil, do: [:scale_count]
-
-  defp peak_load(current_user) do
-    [
-      :scale_count,
-      scaled_by_user: %{user_id: current_user.id}
-    ]
+  def handle_info(%Phoenix.Socket.Broadcast{topic: "peaks:unscaled:" <> _id}, socket) do
+    peak = socket.assigns.peak |> Map.put(:scale_count, socket.assigns.peak.scale_count - 1)
+    {:noreply, assign(socket, :peak, peak)}
   end
 end
