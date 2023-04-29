@@ -46,6 +46,8 @@ tbody
 thead
 topbar
 trunc
+typecheck
+typechecker
 unistd
 unscale
 upsert

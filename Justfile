@@ -3,7 +3,7 @@ default:
   just --list
 
 # Run the things that are run in CI
-ci: spellcheck format graphql-schema-dump lint test
+ci: spellcheck format graphql-schema-dump lint typecheck test
 
 # Open an Elixir console
 console:
@@ -24,6 +24,10 @@ db-rollback:
 # Seed the dev database
 db-seed:
   mix ecto.seed
+
+# Run the Elixir typechecker (Dialyzer)
+typecheck:
+  mix dialyzer
 
 # Format all files
 format:
