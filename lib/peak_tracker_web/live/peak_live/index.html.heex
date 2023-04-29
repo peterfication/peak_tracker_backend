@@ -1,0 +1,32 @@
+<.header>
+  Listing Peaks
+</.header>
+
+<.table id="peaks" rows={@peaks} row_click={&JS.navigate(~p"/peaks/#{&1.slug}")}>
+  <:col :let={peak} label="Name"><%= peak.name %></:col>
+  <:col :let={peak} label="Text">
+    <%= peak.latitude %>
+    <%= peak.longitude %>
+    <%= if @current_user == nil do %>
+      <button>
+        <Heroicons.flag class="h-4 w-4" />
+      </button>
+    <% else %>
+      <%= if peak.scaled_by_user do %>
+        <button phx-click="unscale" phx-value-id={peak.id}>
+          <Heroicons.flag class="h-4 w-4 fill-blue-700" />
+        </button>
+      <% else %>
+        <button phx-click="scale" phx-value-id={peak.id}>
+          <Heroicons.flag class="h-4 w-4" />
+        </button>
+      <% end %>
+    <% end %>
+    <%= peak.scale_count %>
+  </:col>
+  <:action :let={peak}>
+    <div class="sr-only">
+      <.link navigate={~p"/peaks/#{peak}"}>Show</.link>
+    </div>
+  </:action>
+</.table>

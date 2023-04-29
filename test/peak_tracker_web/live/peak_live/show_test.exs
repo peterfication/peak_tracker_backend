@@ -1,14 +1,7 @@
-defmodule PeakTrackerWeb.PeakControllerTest do
+defmodule PeakTrackerWeb.Live.PeakLive.ShowTest do
   use PeakTrackerWeb.ConnCase
 
   import PeakTracker.MountainsFixtures
-
-  describe "index" do
-    test "lists all peaks", %{conn: conn} do
-      conn = get(conn, ~p"/peaks")
-      assert html_response(conn, 200) =~ "Peaks"
-    end
-  end
 
   describe "show peak" do
     setup [:create_peak]

@@ -7,6 +7,9 @@ defmodule PeakTracker.Mountains.Peak do
     data_layer: AshPostgres.DataLayer,
     extensions: [
       AshGraphql.Resource
+    ],
+    notifiers: [
+      Ash.Notifier.PubSub
     ]
 
   require Ecto.Query
@@ -81,6 +84,14 @@ defmodule PeakTracker.Mountains.Peak do
         {:ok, changeset.data}
       end
     end
+  end
+
+  pub_sub do
+    module PeakTrackerWeb.Endpoint
+    prefix "peaks"
+
+    publish :scale, ["scaled", :id]
+    publish :unscale, ["unscaled", :id]
   end
 
   identities do
