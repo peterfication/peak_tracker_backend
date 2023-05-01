@@ -19,16 +19,15 @@ defmodule PeakTrackerWeb.PeakLive.Index do
 
   @impl true
   def handle_params(params, _, socket) do
-    peaks_result = load_peaks(params, socket)
-
-    {has_previous_page, has_next_page} = has_prev_next_page(peaks_result, params)
+    peaks_data = load_peaks(params, socket)
+    subscribe_peaks(peaks_data.peaks_page)
 
     {
       :noreply,
       socket
-      |> assign(peaks: peaks_result.results)
-      |> assign(:has_next_page, has_next_page)
-      |> assign(:has_previous_page, has_previous_page)
+      |> assign(peaks: peaks_data.peaks_page.results)
+      |> assign(:has_next_page, peaks_data.has_next_page)
+      |> assign(:has_previous_page, peaks_data.has_previous_page)
     }
   end
 
@@ -73,30 +72,44 @@ defmodule PeakTrackerWeb.PeakLive.Index do
   end
 
   defp load_peaks(params, socket) do
-    page_after = params["after"]
-    page_before = params["before"]
-
-    page =
-      cond do
-        page_after != nil && page_after != "" -> [after: page_after]
-        page_before != nil && page_before != "" -> [before: page_before]
-        true -> []
-      end
-
     peaks_page =
       Peak.list!(
         load: Utils.peak_load(socket.assigns.current_user),
-        page: page
+        page: page_param(params)
       )
 
+    {has_previous_page, has_next_page} = has_prev_next_page(peaks_page, params)
+
+    %{
+      peaks_page: peaks_page,
+      has_previous_page: has_previous_page,
+      has_next_page: has_next_page
+    }
+  end
+
+  # Generate the page params that are passed to the list function
+  # depending on the params (after, before) received from the client.
+  defp page_param(params) do
+    page_after = params["after"]
+    page_before = params["before"]
+
+    cond do
+      page_after != nil && page_after != "" -> [after: page_after]
+      page_before != nil && page_before != "" -> [before: page_before]
+      true -> []
+    end
+  end
+
+  # Subscribe to the peaks scaled and unscaled topics.
+  defp subscribe_peaks(peaks_page) do
     Enum.each(peaks_page.results, fn peak ->
       Endpoint.subscribe("peaks:scaled:#{peak.id}")
       Endpoint.subscribe("peaks:unscaled:#{peak.id}")
     end)
-
-    peaks_page
   end
 
+  # Calculate has previous and has next page based on the cursor based
+  # pagination params "after" and "before".
   defp has_prev_next_page(peaks_page, params) do
     page_after = if params["after"] == "", do: nil, else: params["after"]
     page_before = if params["before"] == "", do: nil, else: params["before"]
@@ -109,6 +122,7 @@ defmodule PeakTrackerWeb.PeakLive.Index do
         {true, peaks_page.more?}
 
       {nil, _} ->
+        # See https://github.com/ash-project/ash_graphql/pull/36#issuecomment-1243892511
         {peaks_page.more?, not Enum.empty?(peaks_page.results)}
     end
   end
