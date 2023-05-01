@@ -30,3 +30,13 @@
     </div>
   </:action>
 </.table>
+
+<div>
+  <button phx-click="page:previous" disabled={not @has_previous_page}>
+    Previous page <Heroicons.chevron_double_left class="h-4 w-4 fill-blue-700" />
+  </button>
+
+  <button phx-click="page:next" disabled={not @has_next_page}>
+    Next page <Heroicons.chevron_double_right class="h-4 w-4 fill-blue-700" />
+  </button>
+</div>
