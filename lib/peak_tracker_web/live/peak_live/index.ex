@@ -4,20 +4,49 @@ defmodule PeakTrackerWeb.PeakLive.Index do
   alias PeakTracker.Mountains.Peak
   alias PeakTrackerWeb.Endpoint
   alias PeakTrackerWeb.PeakLive.Utils
+  alias PeakTrackerWeb.Utils.Pagination.Keyset
 
   @impl true
   def mount(_params, _session, socket) do
-    peaks = Peak.list!(load: Utils.peak_load(socket.assigns.current_user)).results
+    {
+      :ok,
+      socket
+      |> assign(:page_title, "Listing Peaks")
+      |> assign(peaks: [])
+      |> assign(has_previous_page: false)
+      |> assign(has_next_page: false)
+    }
+  end
 
-    Enum.each(peaks, fn peak ->
+  @impl true
+  def handle_params(params, _, socket) do
+    peaks_data = load_peaks(params, socket)
+
+    Enum.each(peaks_data.peaks_page.results, fn peak ->
       Endpoint.subscribe("peaks:scaled:#{peak.id}")
       Endpoint.subscribe("peaks:unscaled:#{peak.id}")
     end)
 
-    {:ok, socket |> assign(:page_title, "Listing Peaks") |> assign(peaks: peaks)}
+    {
+      :noreply,
+      socket
+      |> assign(peaks: peaks_data.peaks_page.results)
+      |> assign(:has_next_page, peaks_data.has_next_page)
+      |> assign(:has_previous_page, peaks_data.has_previous_page)
+    }
   end
 
   @impl true
+  def handle_event("page:previous", _params, socket) do
+    before_keyset = List.first(socket.assigns.peaks).__metadata__.keyset
+    {:noreply, socket |> push_patch(to: ~p"/peaks?before=#{before_keyset}")}
+  end
+
+  def handle_event("page:next", _params, socket) do
+    after_keyset = List.last(socket.assigns.peaks).__metadata__.keyset
+    {:noreply, socket |> push_patch(to: ~p"/peaks?after=#{after_keyset}")}
+  end
+
   def handle_event("scale", %{"id" => id}, socket) do
     peak =
       socket.assigns.peaks
@@ -45,6 +74,19 @@ defmodule PeakTrackerWeb.PeakLive.Index do
 
   def handle_info(%Phoenix.Socket.Broadcast{topic: "peaks:unscaled:" <> id}, socket) do
     {:noreply, assign(socket, :peaks, peak_unscaled(socket.assigns.peaks, id))}
+  end
+
+  defp load_peaks(params, socket) do
+    peaks_page =
+      Peak.list!(
+        load: Utils.peak_load(socket.assigns.current_user),
+        page: Keyset.page_param(params)
+      )
+
+    Map.merge(
+      %{peaks_page: peaks_page},
+      Keyset.has_previous_or_next_page(peaks_page, params)
+    )
   end
 
   defp replace_peak(peaks, peak) do
