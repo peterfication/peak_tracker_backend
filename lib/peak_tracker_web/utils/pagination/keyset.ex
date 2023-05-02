@@ -39,23 +39,26 @@ defmodule PeakTrackerWeb.Utils.Pagination.Keyset do
       iex> PeakTrackerWeb.Utils.Pagination.Keyset.has_previous_or_next_page(page, %{"after" => "foo"})
       %{has_previous_page: true, has_next_page: true}
   """
-  @spec! has_previous_or_next_page(%{results: list(), more?: boolean()}, map()) ::
+  @spec! has_previous_or_next_page(map(), map()) ::
            %{has_previous_page: boolean(), has_next_page: boolean()}
   def has_previous_or_next_page(page, params) do
     page_after = if params["after"] == "", do: nil, else: params["after"]
     page_before = if params["before"] == "", do: nil, else: params["before"]
 
+    more = if Map.has_key?(page, :more?), do: page.more?, else: false
+    results = if Map.has_key?(page, :results), do: page.results, else: []
+
     {has_previous_page, has_next_page} =
       case {page_after, page_before} do
         {nil, nil} ->
-          {false, page.more?}
+          {false, more}
 
         {_, nil} ->
-          {true, page.more?}
+          {true, more}
 
         {nil, _} ->
           # See https://github.com/ash-project/ash_graphql/pull/36#issuecomment-1243892511
-          {page.more?, not Enum.empty?(page.results)}
+          {more, not Enum.empty?(results)}
       end
 
     %{has_previous_page: has_previous_page, has_next_page: has_next_page}
