@@ -61,7 +61,7 @@ defmodule PeakTracker.MixProject do
       {:gettext, "~> 0.20"},
       {:hackney, "~> 1.8"},
       {:heroicons, "~> 0.5"},
-      {:httpoison, "~> 1.8"},
+      {:httpoison, "~> 2.1"},
       {:jason, "~> 1.2"},
       {:mock, "~> 0.3", only: :test},
       {:mox, "~> 1.0", only: :test},
