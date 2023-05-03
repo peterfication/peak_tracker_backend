@@ -53,6 +53,18 @@ defmodule PeakTrackerWeb.PeakLive.IndexTest do
     end
   end
 
+  describe "handle_event/3 search" do
+    setup do
+      SocketHelper.create_socket()
+    end
+
+    test "pushes a route with the proper query param set", %{socket: socket} do
+      {:noreply, socket} = Subject.handle_event("search", %{"query" => "something"}, socket)
+
+      assert socket.redirected == {:live, :patch, %{kind: :push, to: "/peaks?query=something"}}
+    end
+  end
+
   describe "handle_event/3 page:previous" do
     setup do
       Map.merge(
@@ -67,6 +79,17 @@ defmodule PeakTrackerWeb.PeakLive.IndexTest do
       {:noreply, socket} = Subject.handle_event("page:previous", %{}, socket)
 
       assert socket.redirected == {:live, :patch, %{kind: :push, to: "/peaks?before=keyset_1"}}
+    end
+
+    test "when a search query is set pushes a route with the proper before query and query query param set",
+         %{socket: socket, peaks: peaks} do
+      socket = SocketHelper.set_data(socket, peaks: peaks)
+      socket = SocketHelper.set_data(socket, query: "something")
+
+      {:noreply, socket} = Subject.handle_event("page:previous", %{}, socket)
+
+      assert socket.redirected ==
+               {:live, :patch, %{kind: :push, to: "/peaks?query=something&before=keyset_1"}}
     end
   end
 
@@ -84,6 +107,17 @@ defmodule PeakTrackerWeb.PeakLive.IndexTest do
       {:noreply, socket} = Subject.handle_event("page:next", %{}, socket)
 
       assert socket.redirected == {:live, :patch, %{kind: :push, to: "/peaks?after=keyset_2"}}
+    end
+
+    test "when a search query is set pushes a route with the proper after query and query query param set",
+         %{socket: socket, peaks: peaks} do
+      socket = SocketHelper.set_data(socket, peaks: peaks)
+      socket = SocketHelper.set_data(socket, query: "something")
+
+      {:noreply, socket} = Subject.handle_event("page:next", %{}, socket)
+
+      assert socket.redirected ==
+               {:live, :patch, %{kind: :push, to: "/peaks?query=something&after=keyset_2"}}
     end
   end
 end
