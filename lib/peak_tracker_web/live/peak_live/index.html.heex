@@ -2,6 +2,10 @@
   Listing Peaks
 </.header>
 
+<form phx-change="search">
+  <input type="text" name="query" value={@query} phx-debounce="300" />
+</form>
+
 <.table id="peaks" rows={@peaks} row_click={&JS.navigate(~p"/peaks/#{&1.slug}")}>
   <:col :let={peak} label="Name"><%= peak.name %></:col>
   <:col :let={peak} label="Text">

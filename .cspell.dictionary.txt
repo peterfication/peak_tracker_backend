@@ -16,6 +16,7 @@ graphi
 heroicons
 hexpm
 httpoison
+ilike
 inet
 invalidtoken
 justfile

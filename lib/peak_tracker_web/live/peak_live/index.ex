@@ -1,6 +1,8 @@
 defmodule PeakTrackerWeb.PeakLive.Index do
   use PeakTrackerWeb, :live_view
 
+  require Ash.Query
+
   alias PeakTracker.Mountains.Peak
   alias PeakTrackerWeb.Endpoint
   alias PeakTrackerWeb.PeakLive.Utils
@@ -13,6 +15,7 @@ defmodule PeakTrackerWeb.PeakLive.Index do
       socket
       |> assign(:page_title, "Listing Peaks")
       |> assign(peaks: [])
+      |> assign(query: "")
       |> assign(has_previous_page: false)
       |> assign(has_next_page: false)
     }
@@ -31,20 +34,29 @@ defmodule PeakTrackerWeb.PeakLive.Index do
       :noreply,
       socket
       |> assign(peaks: peaks_data.peaks_page.results)
+      |> assign(query: params["query"])
       |> assign(:has_next_page, peaks_data.has_next_page)
       |> assign(:has_previous_page, peaks_data.has_previous_page)
     }
   end
 
   @impl true
+  def handle_event("search", %{"query" => query}, socket) do
+    {:noreply, socket |> push_patch(to: ~p"/peaks?query=#{query}")}
+  end
+
   def handle_event("page:previous", _params, socket) do
     before_keyset = List.first(socket.assigns.peaks).__metadata__.keyset
-    {:noreply, socket |> push_patch(to: ~p"/peaks?before=#{before_keyset}")}
+
+    {:noreply,
+     socket |> push_patch(to: ~p"/peaks" <> "?#{query_param(socket)}before=#{before_keyset}")}
   end
 
   def handle_event("page:next", _params, socket) do
     after_keyset = List.last(socket.assigns.peaks).__metadata__.keyset
-    {:noreply, socket |> push_patch(to: ~p"/peaks?after=#{after_keyset}")}
+
+    {:noreply,
+     socket |> push_patch(to: ~p"/peaks" <> "?#{query_param(socket)}after=#{after_keyset}")}
   end
 
   def handle_event("scale", %{"id" => id}, socket) do
@@ -79,6 +91,7 @@ defmodule PeakTrackerWeb.PeakLive.Index do
   defp load_peaks(params, socket) do
     peaks_page =
       Peak.list!(
+        query: peaks_query(params),
         load: Utils.peak_load(socket.assigns.current_user),
         page: Keyset.page_param(params)
       )
@@ -88,6 +101,22 @@ defmodule PeakTrackerWeb.PeakLive.Index do
       Keyset.has_previous_or_next_page(peaks_page, params)
     )
   end
+
+  defp peaks_query(params) do
+    query_ilike_value(params["query"])
+    |> case do
+      nil -> nil
+      ilike_value -> Ash.Query.filter(Peak, fragment("? ILIKE ?", name, ^ilike_value))
+    end
+  end
+
+  defp query_ilike_value(value) when is_binary(value), do: "%#{value}%"
+  defp query_ilike_value(_value), do: nil
+
+  defp query_param(socket) when is_binary(socket.assigns.query) and socket.assigns.query != "",
+    do: "query=#{socket.assigns.query}&"
+
+  defp query_param(_socket), do: ""
 
   defp replace_peak(peaks, peak) do
     Enum.map(peaks, fn current_peak ->
