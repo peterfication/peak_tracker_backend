@@ -4,6 +4,7 @@ defmodule PeakTracker.Mountains do
   """
 
   use Ash.Api,
+    otp_app: :peak_tracker,
     extensions: [
       AshGraphql.Api
     ]

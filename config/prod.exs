@@ -33,5 +33,15 @@ config :sentry,
   },
   included_environments: [:prod]
 
+config :peak_tracker, PeakTracker.Mountains,
+  graphql: [
+    show_raised_errors?: false
+  ]
+
+config :peak_tracker, PeakTracker.Accounts,
+  graphql: [
+    show_raised_errors?: false
+  ]
+
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.

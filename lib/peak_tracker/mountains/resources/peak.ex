@@ -57,6 +57,18 @@ defmodule PeakTracker.Mountains.Peak do
         keyset?: true,
         default_limit: 20
       )
+
+      argument(
+        :scaled_by_actor,
+        :boolean,
+        description: "Show only peaks scaled by the current actor (Not implemented yet)"
+      )
+
+      # filter(
+      #   expr do
+      #     is_nil(^arg(:representative_id)) or representative_id == ^arg(:representative_id)
+      #   end
+      # )
     end
 
     update :scale do

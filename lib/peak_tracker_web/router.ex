@@ -18,6 +18,11 @@ defmodule PeakTrackerWeb.Router do
     plug(:load_from_bearer)
   end
 
+  pipeline :graphql do
+    plug(:load_from_bearer)
+    plug AshGraphql.Plug
+  end
+
   scope "/", PeakTrackerWeb do
     pipe_through(:browser)
 
@@ -40,6 +45,8 @@ defmodule PeakTrackerWeb.Router do
   end
 
   scope "/" do
+    pipe_through [:graphql]
+
     forward("/gql", Absinthe.Plug, schema: PeakTracker.Schema)
 
     forward(
