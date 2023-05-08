@@ -1,0 +1,15 @@
+{
+  "data": {
+    "peaks": {
+      "edges": [
+        {
+          "node": {
+            "id": "{{peak_id}}",
+            "name": "{{peak_name}}",
+            "scaleCount": "{{peak_scale_count}}"
+          }
+        }
+      ]
+    }
+  }
+}

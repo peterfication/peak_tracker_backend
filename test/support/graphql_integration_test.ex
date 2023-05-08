@@ -21,18 +21,16 @@ defmodule GraphqlIntegrationTest do
       def assert_graphql_request(conn, options \\ %{}),
         do: assert(execute_graphql_query(conn) == load_json_response(options))
 
-      def execute_graphql_query(conn) do
-        conn =
+      def execute_graphql_query(conn),
+        do:
           post(
             conn,
             ~p"/gql",
             %{query: load_query()}
           )
+          |> json_response(200)
 
-        json_response(conn, 200)
-      end
-
-      def load_query,
+      defp load_query,
         do:
           File.read!(
             Path.expand(
@@ -41,30 +39,38 @@ defmodule GraphqlIntegrationTest do
             )
           )
 
-      def file_name_without_extension, do: Path.basename(__ENV__.file) |> Path.rootname()
+      defp file_name_without_extension, do: Path.basename(__ENV__.file) |> Path.rootname()
 
-      def load_json_response(options = %{}) do
-        variables = options[:response_variables] || %{}
-        replacements = Enum.map(Map.to_list(variables), fn {k, v} -> {"{{#{k}}}", v} end)
+      defp load_json_response(options = %{}),
+        do: Jason.decode!(response_string_with_variables(options))
 
-        response_string_with_variables =
-          Enum.reduce(replacements, load_response_string(options), fn {old, new}, acc ->
-            String.replace(acc, old, new)
+      defp response_string_with_variables(options),
+        do:
+          Enum.reduce(
+            response_replacements(options),
+            load_response_string(options),
+            fn {old, new}, acc ->
+              String.replace(acc, old, new)
+            end
+          )
+
+      defp response_replacements(options),
+        do:
+          Enum.map(Map.to_list(options[:response_variables] || %{}), fn {key, value} ->
+            case value do
+              value when is_number(value) -> {"\"{{#{key}}}\"", "#{value}"}
+              _ -> {"{{#{key}}}", value}
+            end
           end)
 
-        Jason.decode!(response_string_with_variables)
-      end
-
-      def load_response_string(options) do
-        response_file_path =
+      defp load_response_string(options),
+        do:
           Path.expand(
             options[:response_template_file_path] ||
               "#{file_name_without_extension()}/response.json",
             Path.dirname(__ENV__.file)
           )
-
-        File.read!(response_file_path)
-      end
+          |> File.read!()
     end
   end
 end

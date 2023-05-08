@@ -1,0 +1,11 @@
+query {
+  peaks {
+    edges {
+      node {
+        id
+        name
+        scaleCount
+      }
+    }
+  }
+}
