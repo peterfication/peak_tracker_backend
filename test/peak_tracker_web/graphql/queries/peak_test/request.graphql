@@ -1,0 +1,7 @@
+query GetPeak($id: ID!) {
+  peak(id: $id) {
+    id
+    name
+    scaleCount
+  }
+}

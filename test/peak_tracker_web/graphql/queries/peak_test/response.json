@@ -1,0 +1,9 @@
+{
+  "data": {
+    "peak": {
+      "id": "{{peak_id}}",
+      "name": "{{peak_name}}",
+      "scaleCount": "{{peak_scale_count}}"
+    }
+  }
+}
