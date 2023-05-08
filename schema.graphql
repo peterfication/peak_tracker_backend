@@ -41,6 +41,11 @@ input PeakFilterOsmId {
   greaterThanOrEqual: Int
 }
 
+type User {
+  id: ID!
+  email: String!
+}
+
 "A relay page info"
 type PageInfo {
   "When paginating backwards, are there more items?"
@@ -86,6 +91,7 @@ input PeakFilterScaledByUser {
 }
 
 type RootQueryType {
+  currentUser: User
   peaks(
     "How to sort the records in the response"
     sort: [PeakSortInput]

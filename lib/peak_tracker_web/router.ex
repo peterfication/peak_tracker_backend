@@ -19,6 +19,7 @@ defmodule PeakTrackerWeb.Router do
   end
 
   pipeline :graphql do
+    # TODO: Check whether load_from_bearer works as expected.
     plug(:load_from_bearer)
     plug AshGraphql.Plug
   end

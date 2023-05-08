@@ -37,6 +37,7 @@ peterfication
 proto
 rarr
 rebar
+rootname
 sigterm
 spectest
 starti

@@ -11,7 +11,7 @@ defmodule PeakTracker.Mountains do
 
   graphql do
     # TODO: Remove this once authorization is implemented
-    authorize?(false)
+    authorize?(true)
   end
 
   resources do

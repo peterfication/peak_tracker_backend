@@ -4,7 +4,10 @@ defmodule PeakTracker.Accounts.User do
   """
   use Ash.Resource,
     data_layer: AshPostgres.DataLayer,
-    extensions: [AshAuthentication]
+    extensions: [
+      AshAuthentication,
+      AshGraphql.Resource
+    ]
 
   attributes do
     uuid_primary_key(:id)
@@ -12,52 +15,70 @@ defmodule PeakTracker.Accounts.User do
   end
 
   authentication do
-    api PeakTracker.Accounts
+    api(PeakTracker.Accounts)
 
     strategies do
       oauth2 :peak_tracker_auth do
-        client_id PeakTracker.GetSecret
-        client_secret PeakTracker.GetSecret
-        authorization_params scope: "openid email"
-        site PeakTracker.GetSecret
-        authorize_url PeakTracker.GetSecret
-        token_url PeakTracker.GetSecret
-        user_url PeakTracker.GetSecret
-        redirect_uri PeakTracker.GetSecret
+        client_id(PeakTracker.GetSecret)
+        client_secret(PeakTracker.GetSecret)
+        authorization_params(scope: "openid email")
+        site(PeakTracker.GetSecret)
+        authorize_url(PeakTracker.GetSecret)
+        token_url(PeakTracker.GetSecret)
+        user_url(PeakTracker.GetSecret)
+        redirect_uri(PeakTracker.GetSecret)
 
-        sign_in_action_name :sign_in_with_peak_tracker_auth
-        register_action_name :register_with_peak_tracker_auth
-        identity_resource PeakTracker.Accounts.UserIdentity
+        sign_in_action_name(:sign_in_with_peak_tracker_auth)
+        register_action_name(:register_with_peak_tracker_auth)
+        identity_resource(PeakTracker.Accounts.UserIdentity)
       end
     end
   end
 
   actions do
-    defaults([:read])
+    defaults([:read, :create])
+
+    read :current_user do
+      get? true
+
+      filter(id: actor(:id))
+    end
 
     read :sign_in_with_peak_tracker_auth do
-      argument :user_info, :map, allow_nil?: false
-      argument :oauth_tokens, :map, allow_nil?: false
-      prepare AshAuthentication.Strategy.OAuth2.SignInPreparation
+      argument(:user_info, :map, allow_nil?: false)
+      argument(:oauth_tokens, :map, allow_nil?: false)
+      prepare(AshAuthentication.Strategy.OAuth2.SignInPreparation)
 
-      filter expr(email == get_path(^arg(:user_info), [:email]))
+      filter(expr(email == get_path(^arg(:user_info), [:email])))
     end
 
     create :register_with_peak_tracker_auth do
-      argument :user_info, :map, allow_nil?: false
-      argument :oauth_tokens, :map, allow_nil?: false
-      upsert? true
-      upsert_identity :email
+      argument(:user_info, :map, allow_nil?: false)
+      argument(:oauth_tokens, :map, allow_nil?: false)
+      upsert?(true)
+      upsert_identity(:email)
 
-      change AshAuthentication.GenerateTokenChange
-      change AshAuthentication.Strategy.OAuth2.IdentityChange
+      change(AshAuthentication.GenerateTokenChange)
+      change(AshAuthentication.Strategy.OAuth2.IdentityChange)
 
-      change fn changeset, _ctx ->
+      change(fn changeset, _ctx ->
         user_info = Ash.Changeset.get_argument(changeset, :user_info)
 
         changeset
         |> Ash.Changeset.change_attribute(:email, user_info["email"])
-      end
+      end)
+    end
+  end
+
+  graphql do
+    type(:user)
+
+    # The user is exposed only via the currentUser field and we don't want
+    # to allow filtering on it.
+    derive_filter?(false)
+
+    queries do
+      read_one(:current_user, :current_user)
     end
   end
 
@@ -72,7 +93,7 @@ defmodule PeakTracker.Accounts.User do
 
   relationships do
     has_many(:scales, PeakTracker.Mountains.Scale) do
-      api PeakTracker.Mountains
+      api(PeakTracker.Mountains)
     end
   end
 end
