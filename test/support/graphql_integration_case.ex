@@ -1,4 +1,4 @@
-defmodule GraphqlIntegrationTest do
+defmodule GraphqlIntegrationCase do
   defmacro __using__(_options) do
     quote do
       # TODO: Extract this into an option

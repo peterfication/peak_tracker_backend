@@ -1,5 +1,5 @@
 defmodule PeakTrackerWeb.GraphQL.Queries.PeakTest do
-  use GraphqlIntegrationTest
+  use GraphqlIntegrationCase
 
   test "returns a peak", %{conn: conn} do
     peak = PeakTracker.MountainsFixtures.peak_fixture()

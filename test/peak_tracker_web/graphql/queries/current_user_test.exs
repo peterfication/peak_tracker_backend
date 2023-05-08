@@ -1,5 +1,5 @@
 defmodule PeakTrackerWeb.GraphQL.Queries.CurrentUserTest do
-  use GraphqlIntegrationTest
+  use GraphqlIntegrationCase
 
   describe "when the actor is not set" do
     test "the current user returns nil", %{conn: conn} do
