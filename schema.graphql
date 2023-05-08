@@ -41,6 +41,11 @@ input PeakFilterOsmId {
   greaterThanOrEqual: Int
 }
 
+type User {
+  id: ID!
+  email: String!
+}
+
 "A relay page info"
 type PageInfo {
   "When paginating backwards, are there more items?"
@@ -86,6 +91,7 @@ input PeakFilterScaledByUser {
 }
 
 type RootQueryType {
+  currentUser: User
   peaks(
     "How to sort the records in the response"
     sort: [PeakSortInput]
@@ -104,6 +110,9 @@ type RootQueryType {
 
     "The number of records to return to the end. Maximum 250"
     last: Int
+
+    "Show only peaks scaled by the current actor (Not implemented yet)"
+    scaledByActor: Boolean
   ): PeakConnection
   peak(
     "The id of the record"

@@ -70,6 +70,16 @@ config :phoenix, :json_library, Jason
 # Set Sentry to none, so it is disabled by default and only enabled per environment
 config :sentry, included_environments: []
 
+config :peak_tracker, PeakTracker.Mountains,
+  graphql: [
+    show_raised_errors?: true
+  ]
+
+config :peak_tracker, PeakTracker.Accounts,
+  graphql: [
+    show_raised_errors?: true
+  ]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

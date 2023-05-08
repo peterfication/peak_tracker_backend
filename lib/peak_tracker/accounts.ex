@@ -3,9 +3,17 @@ defmodule PeakTracker.Accounts do
   The Accounts context.
   """
 
-  use Ash.Api
+  use Ash.Api,
+    otp_app: :peak_tracker,
+    extensions: [
+      AshGraphql.Api
+    ]
+
+  graphql do
+    authorize?(true)
+  end
 
   resources do
-    registry PeakTracker.Accounts.Registry
+    registry(PeakTracker.Accounts.Registry)
   end
 end

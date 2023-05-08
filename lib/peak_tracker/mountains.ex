@@ -4,13 +4,14 @@ defmodule PeakTracker.Mountains do
   """
 
   use Ash.Api,
+    otp_app: :peak_tracker,
     extensions: [
       AshGraphql.Api
     ]
 
   graphql do
     # TODO: Remove this once authorization is implemented
-    authorize?(false)
+    authorize?(true)
   end
 
   resources do
