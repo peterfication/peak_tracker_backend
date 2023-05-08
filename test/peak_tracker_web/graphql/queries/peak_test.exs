@@ -1,10 +1,13 @@
-defmodule PeakTrackerWeb.GraphQL.Queries.PeaksTest do
+defmodule PeakTrackerWeb.GraphQL.Queries.PeakTest do
   use GraphqlIntegrationCase
 
-  test "returns peaks", %{conn: conn} do
+  test "returns a peak", %{conn: conn} do
     peak = PeakTracker.MountainsFixtures.peak_fixture()
 
     assert_graphql_request(conn, %{
+      request_variables: %{
+        id: peak.id
+      },
       response_variables: %{
         peak_id: peak.id,
         peak_name: peak.name,

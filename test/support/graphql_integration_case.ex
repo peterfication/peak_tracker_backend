@@ -1,4 +1,4 @@
-defmodule GraphqlIntegrationTest do
+defmodule GraphqlIntegrationCase do
   defmacro __using__(_options) do
     quote do
       # TODO: Extract this into an option
@@ -19,14 +19,17 @@ defmodule GraphqlIntegrationTest do
       end
 
       def assert_graphql_request(conn, options \\ %{}),
-        do: assert(execute_graphql_query(conn) == load_json_response(options))
+        do: assert(execute_graphql_query(conn, options) == load_json_response(options))
 
-      def execute_graphql_query(conn),
+      def execute_graphql_query(conn, options),
         do:
           post(
             conn,
             ~p"/gql",
-            %{query: load_query()}
+            %{
+              query: load_query(),
+              variables: options[:request_variables] || %{}
+            }
           )
           |> json_response(200)
 
