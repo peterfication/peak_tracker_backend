@@ -70,7 +70,7 @@ defmodule PeakTracker.Mountains.Services.Peaks.Import do
     )
   end
 
-  @spec create_peak(peak_data()) :: {:ok, peak()} | {:error, String.t()}
+  @spec create_peak(peak_data()) :: {struct(), [peak()]} | :error
   defp create_peak(peak_data) do
     Peak.create!(%{
       osm_id: peak_data[:osm_id],
