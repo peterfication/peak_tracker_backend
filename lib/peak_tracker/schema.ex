@@ -17,7 +17,6 @@ defmodule PeakTracker.Schema do
   def context(ctx),
     do:
       ctx
-      |> AshGraphql.add_context(@apis)
       |> add_default_actor_to_context()
 
   # If there is no current user / actor, set an empty actor so that
