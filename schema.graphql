@@ -2,21 +2,50 @@ schema {
   query: RootQueryType
 }
 
-input PeakFilterElevation {
+enum PeakSortField {
+  ID
+  NAME
+  SLUG
+  OSM_ID
+  LATITUDE
+  LONGITUDE
+  ELEVATION
+  WIKIPEDIA
+  WIKIDATA_ID
+  SCALED_BY_USER
+  SCALE_COUNT
+}
+
+":peak connection"
+type PeakConnection {
+  "Total count on all pages"
+  count: Int
+
+  "Page information"
+  pageInfo: PageInfo!
+
+  ":peak edges"
+  edges: [PeakEdge]
+}
+
+":peak edge"
+type PeakEdge {
+  "Cursor"
+  cursor: String!
+
+  ":peak node"
+  node: Peak
+}
+
+input PeakFilterScaleCount {
   isNil: Boolean
   eq: Int
   notEq: Int
-  in: [Int!]
+  in: [Int]
   lessThan: Int
   greaterThan: Int
   lessThanOrEqual: Int
   greaterThanOrEqual: Int
-}
-
-input PeakSortInput {
-  order: SortOrder
-  field: PeakSortField!
-  scaledByUserInput: PeakScaledByUserFieldInput
 }
 
 input PeakFilterWikidataId {
@@ -30,6 +59,50 @@ input PeakFilterWikidataId {
   greaterThanOrEqual: String
 }
 
+input PeakFilterWikipedia {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+}
+
+input PeakFilterElevation {
+  isNil: Boolean
+  eq: Int
+  notEq: Int
+  in: [Int!]
+  lessThan: Int
+  greaterThan: Int
+  lessThanOrEqual: Int
+  greaterThanOrEqual: Int
+}
+
+input PeakFilterLongitude {
+  isNil: Boolean
+  eq: Float
+  notEq: Float
+  in: [Float!]
+  lessThan: Float
+  greaterThan: Float
+  lessThanOrEqual: Float
+  greaterThanOrEqual: Float
+}
+
+input PeakFilterLatitude {
+  isNil: Boolean
+  eq: Float
+  notEq: Float
+  in: [Float!]
+  lessThan: Float
+  greaterThan: Float
+  lessThanOrEqual: Float
+  greaterThanOrEqual: Float
+}
+
 input PeakFilterOsmId {
   isNil: Boolean
   eq: Int
@@ -41,9 +114,89 @@ input PeakFilterOsmId {
   greaterThanOrEqual: Int
 }
 
-type User {
+input PeakFilterSlug {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String!]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+}
+
+input PeakFilterName {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String!]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+}
+
+input PeakFilterId {
+  isNil: Boolean
+  eq: ID
+  notEq: ID
+  in: [ID!]
+  lessThan: ID
+  greaterThan: ID
+  lessThanOrEqual: ID
+  greaterThanOrEqual: ID
+}
+
+input PeakFilterInput {
+  and: [PeakFilterInput!]
+  or: [PeakFilterInput!]
+  id: PeakFilterId
+  name: PeakFilterName
+  slug: PeakFilterSlug
+  osmId: PeakFilterOsmId
+  latitude: PeakFilterLatitude
+  longitude: PeakFilterLongitude
+  elevation: PeakFilterElevation
+  wikipedia: PeakFilterWikipedia
+  wikidataId: PeakFilterWikidataId
+  scaleCount: PeakFilterScaleCount
+  scaledByUser: PeakFilterScaledByUser
+}
+
+input PeakSortInput {
+  order: SortOrder
+  field: PeakSortField!
+  scaledByUserInput: PeakScaledByUserFieldInput
+}
+
+type Peak implements Node {
   id: ID!
-  email: String!
+  name: String!
+  slug: String!
+  osmId: Int!
+  latitude: Float!
+  longitude: Float!
+  elevation: Int!
+  wikipedia: String
+  wikidataId: String
+  scaleCount: Int!
+  scaledByUser(userId: ID!): Boolean
+}
+
+input PeakScaledByUserFieldInput {
+  userId: ID!
+}
+
+input PeakFilterScaledByUser {
+  input: PeakScaledByUserFieldInput
+  isNil: Boolean
+  eq: Boolean
+  notEq: Boolean
+  in: [Boolean!]
+  lessThan: Boolean
+  greaterThan: Boolean
+  lessThanOrEqual: Boolean
+  greaterThanOrEqual: Boolean
 }
 
 "A relay page info"
@@ -67,27 +220,14 @@ interface Node {
   id: ID!
 }
 
-input PeakFilterScaleCount {
-  isNil: Boolean
-  eq: Int
-  notEq: Int
-  in: [Int]
-  lessThan: Int
-  greaterThan: Int
-  lessThanOrEqual: Int
-  greaterThanOrEqual: Int
+enum SortOrder {
+  DESC
+  ASC
 }
 
-input PeakFilterScaledByUser {
-  input: PeakScaledByUserFieldInput
-  isNil: Boolean
-  eq: Boolean
-  notEq: Boolean
-  in: [Boolean!]
-  lessThan: Boolean
-  greaterThan: Boolean
-  lessThanOrEqual: Boolean
-  greaterThanOrEqual: Boolean
+type User {
+  id: ID!
+  email: String!
 }
 
 type RootQueryType {
@@ -118,144 +258,4 @@ type RootQueryType {
     "The id of the record"
     id: ID!
   ): Peak
-}
-
-input PeakFilterSlug {
-  isNil: Boolean
-  eq: String
-  notEq: String
-  in: [String!]
-  lessThan: String
-  greaterThan: String
-  lessThanOrEqual: String
-  greaterThanOrEqual: String
-}
-
-input PeakScaledByUserFieldInput {
-  userId: ID!
-}
-
-type Peak implements Node {
-  id: ID!
-  name: String!
-  slug: String!
-  osmId: Int!
-  latitude: Float!
-  longitude: Float!
-  elevation: Int!
-  wikipedia: String
-  wikidataId: String
-  scaleCount: Int!
-  scaledByUser(userId: ID!): Boolean
-}
-
-input PeakFilterWikipedia {
-  isNil: Boolean
-  eq: String
-  notEq: String
-  in: [String]
-  lessThan: String
-  greaterThan: String
-  lessThanOrEqual: String
-  greaterThanOrEqual: String
-}
-
-":peak edge"
-type PeakEdge {
-  "Cursor"
-  cursor: String!
-
-  ":peak node"
-  node: Peak
-}
-
-":peak connection"
-type PeakConnection {
-  "Total count on all pages"
-  count: Int
-
-  "Page information"
-  pageInfo: PageInfo!
-
-  ":peak edges"
-  edges: [PeakEdge]
-}
-
-input PeakFilterId {
-  isNil: Boolean
-  eq: ID
-  notEq: ID
-  in: [ID!]
-  lessThan: ID
-  greaterThan: ID
-  lessThanOrEqual: ID
-  greaterThanOrEqual: ID
-}
-
-enum SortOrder {
-  DESC
-  ASC
-}
-
-input PeakFilterLongitude {
-  isNil: Boolean
-  eq: Float
-  notEq: Float
-  in: [Float!]
-  lessThan: Float
-  greaterThan: Float
-  lessThanOrEqual: Float
-  greaterThanOrEqual: Float
-}
-
-input PeakFilterLatitude {
-  isNil: Boolean
-  eq: Float
-  notEq: Float
-  in: [Float!]
-  lessThan: Float
-  greaterThan: Float
-  lessThanOrEqual: Float
-  greaterThanOrEqual: Float
-}
-
-input PeakFilterName {
-  isNil: Boolean
-  eq: String
-  notEq: String
-  in: [String!]
-  lessThan: String
-  greaterThan: String
-  lessThanOrEqual: String
-  greaterThanOrEqual: String
-}
-
-input PeakFilterInput {
-  and: [PeakFilterInput!]
-  or: [PeakFilterInput!]
-  id: PeakFilterId
-  name: PeakFilterName
-  slug: PeakFilterSlug
-  osmId: PeakFilterOsmId
-  latitude: PeakFilterLatitude
-  longitude: PeakFilterLongitude
-  elevation: PeakFilterElevation
-  wikipedia: PeakFilterWikipedia
-  wikidataId: PeakFilterWikidataId
-  scaleCount: PeakFilterScaleCount
-  scaledByUser: PeakFilterScaledByUser
-}
-
-enum PeakSortField {
-  ID
-  NAME
-  SLUG
-  OSM_ID
-  LATITUDE
-  LONGITUDE
-  ELEVATION
-  WIKIPEDIA
-  WIKIDATA_ID
-  SCALED_BY_USER
-  SCALE_COUNT
 }
