@@ -45,7 +45,7 @@ defmodule PeakTracker.MixProject do
   defp deps do
     [
       {:absinthe_plug, "~> 1.5"},
-      {:ash, "~> 2.13.0"},
+      {:ash, "~> 2.14.0"},
       {:ash_authentication, "~> 3.11.1"},
       {:ash_authentication_phoenix, "~> 1.7.0", override: true},
       {:ash_graphql, "~> 0.25.0"},
