@@ -79,20 +79,23 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 WORKDIR "/app"
-RUN chown nobody /app
+
+# Run and own the application files as a non-root user for security
+RUN adduser -D web
+
+RUN chown web /app
 
 # set runner ENV
 ENV MIX_ENV="prod"
 
 # Only copy the final release from the build stage
-COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/peak_tracker ./
+COPY --from=builder --chown=web:root /app/_build/${MIX_ENV}/rel/peak_tracker ./
 
-# Copy the release script
+# Copy the release and start script
 COPY release.sh /release.sh
+COPY start.sh /start.sh
 
-USER nobody
-
-CMD ["/app/bin/server"]
+CMD ["/start.sh"]
 
 # Appended by flyctl
 ENV ECTO_IPV6 true

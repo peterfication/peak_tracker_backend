@@ -1,3 +1,4 @@
+adduser
 aflags
 autoshow
 citext
@@ -8,6 +9,7 @@ describedby
 ecto
 enctype
 esbuild
+fallocate
 fkey
 floki
 flyctl
@@ -33,6 +35,7 @@ novalidate
 nowrap
 ossp
 outdir
+overcommit
 peterfication
 proto
 rarr
@@ -42,6 +45,8 @@ sigterm
 spectest
 starti
 stylesheet
+swapfile
+swapon
 tabindex
 tailwindcss
 tbody
