@@ -26,8 +26,4 @@ defmodule PeakTracker.Schema do
     do: Map.put(ctx, :actor, %PeakTracker.Accounts.User{})
 
   defp add_default_actor_to_context(ctx), do: ctx
-
-  def plugins do
-    [Absinthe.Middleware.Dataloader | Absinthe.Plugin.defaults()]
-  end
 end
