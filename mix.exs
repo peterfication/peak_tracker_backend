@@ -44,14 +44,16 @@ defmodule PeakTracker.MixProject do
   # Install them with "mix deps.get"
   defp deps do
     [
+      {:absinthe, "~> 1.7"},
       {:absinthe_plug, "~> 1.5"},
       {:ash, "~> 2.14.2"},
       {:ash_authentication, "~> 3.11.1"},
       {:ash_authentication_phoenix, "~> 1.8.1", override: true},
-      {:ash_graphql, "~> 0.26.2"},
+      {:ash_graphql, "~> 0.26.0"},
       {:ash_postgres, "~> 1.3.6"},
       {:bcrypt_elixir, "~> 3.0"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:dataloader, "~> 1.0"},
       {:dialyxir, "~> 1.3", only: [:dev], runtime: false},
       {:ecto_sql, "~> 3.6"},
       {:esbuild, "~> 0.5", runtime: Mix.env() == :dev},
