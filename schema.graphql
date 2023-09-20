@@ -222,7 +222,11 @@ interface Node {
 
 enum SortOrder {
   DESC
+  DESC_NULLS_FIRST
+  DESC_NULLS_LAST
   ASC
+  ASC_NULLS_FIRST
+  ASC_NULLS_LAST
 }
 
 type User {
