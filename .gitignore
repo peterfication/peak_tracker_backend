@@ -35,3 +35,9 @@ peak_tracker-*.tar
 npm-debug.log
 /assets/node_modules/
 node_modules
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

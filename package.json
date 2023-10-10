@@ -8,14 +8,23 @@
     "format:ci": "prettier --check .",
     "lint": "eslint assets/**/*.js .eslintrc.js --quiet",
     "lint:fix": "eslint assets/**/*.js .eslintrc.js --fix --quiet",
-    "spellcheck": "cspell **",
-    "spellcheck:list": "cspell ** --words-only --unique --no-progress"
+    "spellcheck": "cspell '**'",
+    "spellcheck:list": "cspell '**' --words-only --unique --no-progress"
   },
   "devDependencies": {
-    "cspell": "^6.27.0",
-    "eslint": "^7.32.0 || ^8.2.0",
+    "cspell": "^7.3.7",
+    "eslint": "^8.51.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.2",
-    "prettier": "^2.8.4"
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.3"
+  },
+  "packageManager": "yarn@3.6.4",
+  "volta": {
+    "node": "18.18.0"
+  },
+  "engines": {
+    "node": "18.18.0"
   }
 }
