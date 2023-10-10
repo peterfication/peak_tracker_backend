@@ -12,7 +12,7 @@
     "spellcheck:list": "cspell '**' --words-only --unique --no-progress"
   },
   "devDependencies": {
-    "cspell": "^6.27.0",
+    "cspell": "^7.3.7",
     "eslint": "^7.32.0 || ^8.2.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.2",
