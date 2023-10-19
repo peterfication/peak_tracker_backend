@@ -2,6 +2,8 @@
   Peak <%= @peak.name %>
   <:subtitle>
     <%= @peak.latitude %>, <%= @peak.longitude %>
+    <br />
+    <%= @peak.elevation %>m
   </:subtitle>
 </.header>
 
@@ -22,19 +24,38 @@
 <% end %>
 <%= @peak.scale_count %>
 
-<.list>
-  <:item title="Wikidata"><%= @peak.wikidata_id %></:item>
-  <:item title="Peak on Google Maps">
+<ul>
+  <li>
+    <a href={"https://www.openstreetmap.org/node/#{@peak.osm_id}"}>
+      Peak on OpenStreetMaps
+    </a>
+  </li>
+  <li>
     <a href={"https://www.google.com/maps/@#{@peak.latitude},#{@peak.longitude},14z/data=!5m1!1e4"}>
       Peak on Google Maps
     </a>
-  </:item>
-</.list>
-
-<%= if @peak.google_places_id != nil do %>
-  <a href={"https://www.google.com/maps/place/?q=place_id:#{@peak.google_places_id}"}>
-    Peak on Google Places
-  </a>
-<% end %>
+  </li>
+  <%= if @peak.wikidata_id != nil do %>
+    <li>
+      <a href={"https://www.wikidata.org/wiki/#{@peak.wikidata_id}"}>
+        Peak on Wikidata
+      </a>
+    </li>
+  <% end %>
+  <%= if @peak.wikipedia != nil do %>
+    <li>
+      <a href={"https://wikipedia.org/wiki/#{@peak.wikipedia}"}>
+        Peak on Wikipedia
+      </a>
+    </li>
+  <% end %>
+  <%= if @peak.google_places_id != nil do %>
+    <li>
+      <a href={"https://www.google.com/maps/place/?q=place_id:#{@peak.google_places_id}"}>
+        Peak on Google Places
+      </a>
+    </li>
+  <% end %>
+</ul>
 
 <.back navigate={~p"/peaks"}>Back to peaks</.back>
