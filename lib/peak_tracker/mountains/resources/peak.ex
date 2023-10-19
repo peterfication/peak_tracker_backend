@@ -157,6 +157,11 @@ defmodule PeakTracker.Mountains.Peak do
       allow_nil?(true)
     end
 
+    # The Google Places ID, if it exists (has to be added manually)
+    attribute :google_places_id, :string do
+      allow_nil?(true)
+    end
+
     timestamps()
   end
 

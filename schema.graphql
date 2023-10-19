@@ -12,6 +12,7 @@ enum PeakSortField {
   ELEVATION
   WIKIPEDIA
   WIKIDATA_ID
+  GOOGLE_PLACES_ID
   SCALED_BY_USER
   SCALE_COUNT
 }
@@ -46,6 +47,17 @@ input PeakFilterScaleCount {
   greaterThan: Int
   lessThanOrEqual: Int
   greaterThanOrEqual: Int
+}
+
+input PeakFilterGooglePlacesId {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
 }
 
 input PeakFilterWikidataId {
@@ -159,6 +171,7 @@ input PeakFilterInput {
   elevation: PeakFilterElevation
   wikipedia: PeakFilterWikipedia
   wikidataId: PeakFilterWikidataId
+  googlePlacesId: PeakFilterGooglePlacesId
   scaleCount: PeakFilterScaleCount
   scaledByUser: PeakFilterScaledByUser
 }
@@ -179,6 +192,7 @@ type Peak implements Node {
   elevation: Int!
   wikipedia: String
   wikidataId: String
+  googlePlacesId: String
   scaleCount: Int!
   scaledByUser(userId: ID!): Boolean
 }
