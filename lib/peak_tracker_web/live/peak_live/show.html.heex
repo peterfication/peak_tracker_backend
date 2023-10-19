@@ -24,6 +24,17 @@
 
 <.list>
   <:item title="Wikidata"><%= @peak.wikidata_id %></:item>
+  <:item title="Peak on Google Maps">
+    <a href={"https://www.google.com/maps/@#{@peak.latitude},#{@peak.longitude},14z/data=!5m1!1e4"}>
+      Peak on Google Maps
+    </a>
+  </:item>
 </.list>
+
+<%= if @peak.google_places_id != nil do %>
+  <a href={"https://www.google.com/maps/place/?q=place_id:#{@peak.google_places_id}"}>
+    Peak on Google Places
+  </a>
+<% end %>
 
 <.back navigate={~p"/peaks"}>Back to peaks</.back>
