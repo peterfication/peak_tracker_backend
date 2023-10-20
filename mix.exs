@@ -22,7 +22,8 @@ defmodule PeakTracker.MixProject do
         "coveralls.html": :test
       ],
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      dialyzer: [plt_add_apps: [:ex_unit, :mix], ignore_warnings: "config/dialyzer.ignore"]
     ]
   end
 

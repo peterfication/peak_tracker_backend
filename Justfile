@@ -29,6 +29,10 @@ db-seed:
 typecheck:
   mix dialyzer
 
+# List dialyzer errors to copy&paste into config/dialyzer.ignore
+typecheck-list:
+  mix dialyzer --format dialyzer
+
 # Format all files
 format:
   mix format && yarn format
