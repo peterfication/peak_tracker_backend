@@ -22,7 +22,8 @@ defmodule PeakTracker.MixProject do
         "coveralls.html": :test
       ],
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      dialyzer: [plt_add_apps: [:ex_unit, :mix], ignore_warnings: "config/dialyzer.ignore"]
     ]
   end
 
@@ -79,7 +80,7 @@ defmodule PeakTracker.MixProject do
       {:tailwind, "~> 0.2.0", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
-      {:type_check, "~> 0.13.3"}
+      {:type_check, "~> 0.13.5"}
     ]
   end
 

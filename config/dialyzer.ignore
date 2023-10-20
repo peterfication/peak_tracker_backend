@@ -1,0 +1,6 @@
+# Not sure where these are coming from
+# See https://github.com/Qqwy/elixir-type_check/issues/188
+lib/location.ex:11: Function t/0 has no local return
+lib/location.ex:16: Function bounding_box/0 has no local return
+lib/peak_tracker/mountains/services/peaks/fetch_from_overpass.ex:20: Function bounding_box/0 has no local return
+lib/peak_tracker/mountains/services/peaks/fetch_from_overpass.ex:22: Function peak_data/0 has no local return
