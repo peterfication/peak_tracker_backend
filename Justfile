@@ -25,6 +25,10 @@ db-rollback:
 db-seed:
   mix ecto.seed
 
+# Deploy to fly.io via a remote builder
+deploy:
+  flyctl deploy --remote-only
+
 # Run the Elixir typechecker (Dialyzer)
 typecheck:
   mix dialyzer
