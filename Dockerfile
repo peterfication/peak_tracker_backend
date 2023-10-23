@@ -103,6 +103,7 @@ COPY release.sh /release.sh
 COPY start.sh /start.sh
 
 ENV VERSION=${VERSION}
+ENV SENTRY_RELEASE=${VERSION}
 
 CMD ["/start.sh"]
 
