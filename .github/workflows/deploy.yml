@@ -15,6 +15,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --remote-only
-        env:
+      - env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          GIT_REVISION=$(git rev-parse --short HEAD) && \
+            DATE=$(date +%Y-%m-%dT%H:%M:%S) && \
+            VERSION="${DATE}-${GIT_REVISION}" && \
+            flyctl deploy --remote-only --build-arg VERSION=${VERSION}

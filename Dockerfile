@@ -19,6 +19,9 @@ ARG ALPINE_VERSION=3.18.4
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-alpine-${ALPINE_VERSION}"
 ARG RUNNER_IMAGE="alpine:${ALPINE_VERSION}"
 
+# The version is used for Sentry release tracking
+ARG VERSION=default
+
 FROM ${BUILDER_IMAGE} as builder
 
 # install build dependencies
@@ -95,6 +98,8 @@ COPY --from=builder --chown=web:root /app/_build/${MIX_ENV}/rel/peak_tracker ./
 # Copy the release and start script
 COPY release.sh /release.sh
 COPY start.sh /start.sh
+
+ENV VERSION=${VERSION}
 
 CMD ["/start.sh"]
 

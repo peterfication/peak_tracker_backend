@@ -31,7 +31,8 @@ config :sentry,
   tags: %{
     env: "production"
   },
-  included_environments: [:prod]
+  included_environments: [:prod],
+  release: System.get_env("VERSION")
 
 config :peak_tracker, PeakTracker.Mountains,
   graphql: [
