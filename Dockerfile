@@ -73,6 +73,9 @@ RUN mix release
 # the compiled release and other runtime necessities
 FROM ${RUNNER_IMAGE}
 
+# Re-declare args that are needed in the runner image
+ARG VERSION
+
 RUN apk update && apk add libstdc++ openssl ncurses-dev musl-locales && rm -rf /var/cache/apk/*
 
 # Set the locale
