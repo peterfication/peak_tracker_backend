@@ -162,6 +162,7 @@ input PeakFilterId {
 input PeakFilterInput {
   and: [PeakFilterInput!]
   or: [PeakFilterInput!]
+  not: [PeakFilterInput!]
   id: PeakFilterId
   name: PeakFilterName
   slug: PeakFilterSlug
