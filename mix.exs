@@ -49,7 +49,7 @@ defmodule PeakTracker.MixProject do
       {:absinthe_plug, "~> 1.5"},
       {:ash, "~> 2.14.2"},
       {:ash_authentication, "~> 3.11.1"},
-      {:ash_authentication_phoenix, "~> 1.8.1", override: true},
+      {:ash_authentication_phoenix, "~> 1.9.0", override: true},
       {:ash_graphql, "~> 0.26.0"},
       {:ash_postgres, "~> 1.3.6"},
       {:bcrypt_elixir, "~> 3.0"},
