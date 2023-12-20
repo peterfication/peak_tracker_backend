@@ -75,7 +75,7 @@ defmodule PeakTracker.MixProject do
       {:phoenix_live_view, "~> 0.18.16"},
       {:plug_cowboy, "~> 2.5"},
       {:postgrex, ">= 0.0.0"},
-      {:sentry, "~> 9.1"},
+      {:sentry, "~> 10.0"},
       {:swoosh, "~> 1.3"},
       {:tailwind, "~> 0.2.0", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 0.6"},
