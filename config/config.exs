@@ -68,7 +68,7 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 # Set Sentry to none, so it is disabled by default and only enabled per environment
-config :sentry, included_environments: [], environment_name: Mix.env()
+config :sentry, environment_name: Mix.env()
 
 config :peak_tracker, PeakTracker.Mountains,
   graphql: [
