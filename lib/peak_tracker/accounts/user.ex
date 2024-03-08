@@ -22,7 +22,7 @@ defmodule PeakTracker.Accounts.User do
         client_id(PeakTracker.GetSecret)
         client_secret(PeakTracker.GetSecret)
         authorization_params(scope: "openid email")
-        site(PeakTracker.GetSecret)
+        base_url(PeakTracker.GetSecret)
         authorize_url(PeakTracker.GetSecret)
         token_url(PeakTracker.GetSecret)
         user_url(PeakTracker.GetSecret)

@@ -30,7 +30,7 @@ defmodule PeakTracker.GetSecret do
       do: get_secret_from_env_or_local_default(:oauth_client_secret, "local-secret-abc-123")
 
   def secret_for(
-        [:authentication, :strategies, :peak_tracker_auth, :site],
+        [:authentication, :strategies, :peak_tracker_auth, :base_url],
         PeakTracker.Accounts.User,
         _opts
       ),
