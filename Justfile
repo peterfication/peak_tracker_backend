@@ -29,6 +29,10 @@ db-seed:
 deploy:
   flyctl deploy --remote-only
 
+# Install all dependencies
+install:
+  yarn && mix deps.get
+
 # Run the Elixir typechecker (Dialyzer)
 typecheck:
   mix dialyzer
